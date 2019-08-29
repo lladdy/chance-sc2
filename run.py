@@ -1,11 +1,10 @@
-import sc2
 import sys
+
+import sc2
+from chance import run_ladder_game
+from chance.chance import Chance
 from sc2 import Race, Difficulty
 from sc2.player import Bot, Computer
-
-# Load bot
-from chance.chance import Chance
-from chance import run_ladder_game
 
 bot = Bot(Race.Random, Chance())
 
