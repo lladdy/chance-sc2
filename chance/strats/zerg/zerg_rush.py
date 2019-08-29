@@ -3,15 +3,15 @@ import sys
 
 from chance.strats.strat import Strat
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
-
 from sc2.constants import *
 from sc2.unit import Unit
 from sc2.units import Units
 
 
 class ZergRush(Strat):
-
+    """
+    Adapted from https://github.com/BurnySc2/python-sc2/blob/develop/examples/zerg/zerg_rush.py
+    """
     def __init__(self, _bot):
         super().__init__(_bot)
 

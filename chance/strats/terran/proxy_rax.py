@@ -6,6 +6,9 @@ from sc2.helpers import ControlGroup
 
 
 class ProxyRax(Strat):
+    """
+    Adapted from https://github.com/BurnySc2/python-sc2/blob/develop/examples/terran/proxy_rax.py
+    """
     def __init__(self, _bot: sc2.BotAI):
         super().__init__(_bot)
         self.attack_groups = set()

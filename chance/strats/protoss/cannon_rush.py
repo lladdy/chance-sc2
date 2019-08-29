@@ -5,6 +5,9 @@ from sc2.constants import *
 
 
 class CannonRush(Strat):
+    """
+    Adapted from https://github.com/BurnySc2/python-sc2/blob/develop/examples/protoss/cannon_rush.py
+    """
     async def on_step(self):
         if not self._bot.townhalls:
             # Attack with all workers if we don't have any nexuses left, attack-move on enemy spawn (doesn't work on 4 player map) so that probes auto attack on the way

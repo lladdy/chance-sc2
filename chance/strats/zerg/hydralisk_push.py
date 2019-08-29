@@ -5,6 +5,9 @@ from sc2.constants import *
 
 
 class HydraliskPush(Strat):
+    """
+    Adapted from https://github.com/BurnySc2/python-sc2/blob/develop/examples/zerg/hydralisk_push.py
+    """
     def select_target(self):
         if self._bot.enemy_structures.exists:
             return random.choice(self._bot.enemy_structures).position

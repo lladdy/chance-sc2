@@ -4,6 +4,9 @@ from sc2.constants import *
 
 
 class WarpGatePush(Strat):
+    """
+    Adapted from https://github.com/BurnySc2/python-sc2/blob/develop/examples/protoss/warpgate_push.py
+    """
     def __init__(self, _bot: sc2.BotAI):
         # Initialize inherited class
         super().__init__(_bot)

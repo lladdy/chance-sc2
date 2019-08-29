@@ -17,6 +17,9 @@ from sc2.unit import Unit
 
 
 class MassReaper(Strat):
+    """
+    Adapted from https://github.com/BurnySc2/python-sc2/blob/develop/examples/terran/mass_reaper.py
+    """
     def __init__(self, _bot: sc2.BotAI):
         super().__init__(_bot)
         self.combinedActions = []

@@ -4,6 +4,9 @@ from sc2.ids.buff_id import BuffId
 
 
 class ThreebaseVoidray(Strat):
+    """
+    Adapted from https://github.com/BurnySc2/python-sc2/blob/develop/examples/protoss/threebase_voidray.py
+    """
     async def on_step(self):
 
         if not self._bot.townhalls.ready:
