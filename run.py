@@ -7,7 +7,7 @@ from sc2.player import Bot, Computer
 from chance.chance import Chance
 from chance import run_ladder_game
 
-bot = Bot(Race.Random, Chance(Race.Random))
+bot = Bot(Race.Random, Chance())
 
 # Start game
 if __name__ == '__main__':
