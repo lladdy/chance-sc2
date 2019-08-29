@@ -11,6 +11,8 @@ from chance.strats.strat import Strat
 # noinspection PyUnresolvedReferences
 from chance.strats.terran.proxy_rax import ProxyRax
 # noinspection PyUnresolvedReferences
+from chance.strats.zerg.hydralisk_push import HydraliskPush
+# noinspection PyUnresolvedReferences
 from chance.strats.zerg.zerg_rush import ZergRush
 from sc2 import Race
 
@@ -19,7 +21,7 @@ class Chance(sc2.BotAI):
     RANDOM_STRATS = ['WorkerRush', ]
 
     TERAN_STRATS = ['ProxyRax',] + RANDOM_STRATS
-    ZERG_STRATS = ['ZergRush', ] + RANDOM_STRATS
+    ZERG_STRATS = ['ZergRush', 'HydraliskPush', ] + RANDOM_STRATS
     PROTOSS_STRATS = ['CannonRush', 'ThreebaseVoidray', ] + RANDOM_STRATS
 
     AVAILABLE_STRATS = {
