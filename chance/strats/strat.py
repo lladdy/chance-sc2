@@ -11,7 +11,7 @@ class Strat:
     def __init__(self, _bot: sc2.BotAI):
         self._bot = _bot
 
-    async def on_step(self, iteration):
+    async def on_step(self):
         """
         Override this
         """
