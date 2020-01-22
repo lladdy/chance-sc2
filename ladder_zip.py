@@ -12,7 +12,7 @@ root_dir = os.path.dirname(os.path.abspath(__file__))
 
 class LadderZip:
     archive: str
-    files: List[Tuple[str, Optional[str]]]
+    files: List[str]
     
     def __init__(self, archive_name: str, race: str):
         self.name = archive_name
@@ -72,38 +72,14 @@ def create_ladder_zip(archive_zip: LadderZip):
 
     archive_zip.pre_zip()
 
-    for src, dest in bot_specific_paths:
-        if not os.path.exists(src):
-            raise ValueError(f"'{src}' does not exist.")
+    for file in bot_specific_paths:
+        if not os.path.exists(file):
+            raise ValueError(f"'{file}' does not exist.")
 
-        if dest is None:
-            # the file or folder can be used as is.
-            if os.path.isdir(src):
-                directories_to_zip.append(src)
-            else:
-                files_to_zip.append(src)
-        else:  # need to move the file or folder.
-
-            if os.path.isdir(src):
-                shutil.copytree(src, dest)
-                directories_to_zip.append(dest)
-                files_to_delete.append(dest)
-            else:  # src is a file.
-                src_file = os.path.basename(src)
-
-                if os.path.isdir(dest):
-                    # Join directory with filename
-                    dest_path = os.path.join(dest, src_file)
-                else:
-                    # Rename into another file
-                    dest_path = dest
-
-                files_to_zip.append(dest_path)
-
-                print(f"Copying {src} ... {dest_path}")
-                files_to_delete.append(dest_path)
-
-                shutil.copy(src, dest_path)
+        if os.path.isdir(file):
+            directories_to_zip.append(file)
+        else:
+            files_to_zip.append(file)
 
     print()
     print(f"Zipping {archive_name}")
