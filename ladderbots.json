@@ -1,0 +1,10 @@
+{
+	"Bots": {
+		"Chance": {
+			"Race": "Random",
+			"Type": "Python",
+			"RootPath": "./",
+			"FileName": "run.py"
+		}
+	}
+}
