@@ -19,17 +19,17 @@ class LadderZip:
         self.race = race
         self.archive = archive_name + ".zip"
         self.files = [
-            ("chance", None),
-            ("jsonpickle", None),
-            ("sc2", None),
-            ("sharpy", None),
-            ("sc2pathlibp", None),
-            ("requirements.txt", None),
-            ("version.txt", None),
-            ("config.py", None),
-            ("config.ini", None),
-            ("ladderbots.json", None),
-            ("run.py", None),
+            "chance",
+            "jsonpickle",
+            "sc2",
+            "sharpy",
+            "sc2pathlibp",
+            "requirements.txt",
+            "version.txt",
+            "config.py",
+            "config.ini",
+            "ladderbots.json",
+            "run.py",
         ]
 
     def pre_zip(self):
