@@ -22,12 +22,16 @@ class Chance(KnowledgeBot):
         Race.Protoss: PROTOSS_STRATS,
     }
 
-    def __init__(self):
+    def __init__(self, strat_name=None):
         super().__init__("Chance")
+        if strat_name is not None:
+            self._force_strat = strat_name
 
     async def create_plan(self) -> BuildOrder:
         return await self._get_strat(random.choice(self.AVAILABLE_STRATS[self.race])).create_plan()
 
     def _get_strat(self, strat_class: str) -> Strat:
+        if self._force_strat is not None:
+            strat_class = self._force_strat
         # constructs the class based on the classes name as a string
         return globals()[strat_class](self)
