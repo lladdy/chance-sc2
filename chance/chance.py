@@ -1,32 +1,20 @@
 import random
 
-import sc2
-# noinspection PyUnresolvedReferences
-from chance.strats.protoss.cannon_rush import CannonRush
-# noinspection PyUnresolvedReferences
-from chance.strats.protoss.threebase_voidray import ThreebaseVoidray
-# noinspection PyUnresolvedReferences
-from chance.strats.protoss.warpgate_push import WarpGatePush
+# STRAT IMPORTS
 # noinspection PyUnresolvedReferences
 from chance.strats.random.worker_rush import WorkerRush
+
 from chance.strats.strat import Strat
-# noinspection PyUnresolvedReferences
-from chance.strats.terran.mass_reaper import MassReaper
-# noinspection PyUnresolvedReferences
-from chance.strats.terran.proxy_rax import ProxyRax
-# noinspection PyUnresolvedReferences
-from chance.strats.zerg.hydralisk_push import HydraliskPush
-# noinspection PyUnresolvedReferences
-from chance.strats.zerg.zerg_rush import ZergRush
 from sc2 import Race
+from sharpy.knowledges import KnowledgeBot
+from sharpy.plans import BuildOrder
 
 
-class Chance(sc2.BotAI):
+class Chance(KnowledgeBot):
     RANDOM_STRATS = ['WorkerRush', ]
-
-    TERAN_STRATS = ['ProxyRax', 'MassReaper', ] + RANDOM_STRATS
-    ZERG_STRATS = ['ZergRush', 'HydraliskPush', ] + RANDOM_STRATS
-    PROTOSS_STRATS = ['CannonRush', 'ThreebaseVoidray', 'WarpGatePush', ] + RANDOM_STRATS
+    TERAN_STRATS = [] + RANDOM_STRATS
+    ZERG_STRATS = [] + RANDOM_STRATS
+    PROTOSS_STRATS = [] + RANDOM_STRATS
 
     AVAILABLE_STRATS = {
         Race.Terran: TERAN_STRATS,
@@ -35,22 +23,11 @@ class Chance(sc2.BotAI):
     }
 
     def __init__(self):
-        super().__init__()
-        self.iteration = None
-        self.strat = None
+        super().__init__("Chance")
 
-    def select_strat(self):
-        self.strat = self._get_strat(random.choice(self.AVAILABLE_STRATS[self.race]))
+    async def create_plan(self) -> BuildOrder:
+        return await self._get_strat(random.choice(self.AVAILABLE_STRATS[self.race])).create_plan()
 
     def _get_strat(self, strat_class: str) -> Strat:
         # constructs the class based on the classes name as a string
         return globals()[strat_class](self)
-
-    async def on_step(self, iteration):
-        self.iteration = iteration
-
-        if self.iteration == 0:
-            self.select_strat()
-
-        await self.strat.on_step()
-

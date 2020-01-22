@@ -1,4 +1,8 @@
+from abc import abstractmethod
+
 import sc2
+from sharpy.knowledges import KnowledgeBot
+from sharpy.plans import BuildOrder
 
 
 class Strat:
@@ -6,13 +10,11 @@ class Strat:
     An abstract strat containing generic functionality
     """
 
-    _bot = None  # reference to the bot instance
+    _bot: KnowledgeBot = None  # reference to the bot instance
 
-    def __init__(self, _bot: sc2.BotAI):
-        self._bot = _bot
+    def __init__(self, bot: KnowledgeBot):
+        self._bot = bot
 
-    async def on_step(self):
-        """
-        Override this
-        """
+    @abstractmethod
+    async def create_plan(self) -> BuildOrder:
         pass
