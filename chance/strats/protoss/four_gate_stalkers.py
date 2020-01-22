@@ -25,9 +25,7 @@ class FourGateStalkers(Strat):
     async def create_plan(self) -> BuildOrder:
         attack = TheAttack(4)
         return BuildOrder([
-            # Step(None, ChronoUnitProduction(UnitTypeId.STALKER, UnitTypeId.GATEWAY),
-            #      skip=RequiredUnitExists(UnitTypeId.PROBE, 40, include_pending=True),
-            #      skip_until=RequiredUnitExists(UnitTypeId.ASSIMILATOR, 1)),
+            Step(None, ChronoUnitProduction(UnitTypeId.STALKER, UnitTypeId.GATEWAY)),
             SequentialList([
                 GridBuilding(UnitTypeId.PYLON, 1),
                 ActUnit(UnitTypeId.PROBE, UnitTypeId.NEXUS, 15),
@@ -40,12 +38,11 @@ class FourGateStalkers(Strat):
                 ActUnit(UnitTypeId.PROBE, UnitTypeId.NEXUS, 21),
                 GridBuilding(UnitTypeId.PYLON, 2),
                 ActUnit(UnitTypeId.PROBE, UnitTypeId.NEXUS, 22),
+                GateUnit(UnitTypeId.STALKER, 1),
                 ActTech(UpgradeId.WARPGATERESEARCH, UnitTypeId.CYBERNETICSCORE),
-                GridBuilding(UnitTypeId.PYLON, 3),
-                ActUnit(UnitTypeId.PROBE, UnitTypeId.NEXUS, 25),
-                GridBuilding(UnitTypeId.GATEWAY, 3),
-                GridBuilding(UnitTypeId.PYLON, 4),
+                ActUnit(UnitTypeId.PROBE, UnitTypeId.NEXUS, 23),
                 GridBuilding(UnitTypeId.GATEWAY, 4),
+                GridBuilding(UnitTypeId.PYLON, 3),
                 BuildOrder(
                     [
                         AutoPylon(),
