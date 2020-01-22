@@ -7,3 +7,6 @@ venv
 __pycache__/
 *.py[cod]
 *$py.class
+
+version.txt
+publish/
