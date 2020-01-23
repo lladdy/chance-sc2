@@ -4,6 +4,8 @@ import random
 # noinspection PyUnresolvedReferences
 from chance.strats.random.worker_rush import WorkerRush
 # noinspection PyUnresolvedReferences
+from chance.strats.zerg.ling_rush import LingRush
+# noinspection PyUnresolvedReferences
 from chance.strats.protoss.four_gate_stalkers import FourGateStalkers
 
 from chance.strats.strat import Strat
