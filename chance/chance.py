@@ -17,8 +17,8 @@ from sharpy.plans import BuildOrder
 class Chance(KnowledgeBot):
     RANDOM_STRATS = ['WorkerRush', ]
     TERAN_STRATS = [] + RANDOM_STRATS
-    ZERG_STRATS = [] + RANDOM_STRATS
-    PROTOSS_STRATS = [] + RANDOM_STRATS
+    ZERG_STRATS = ['LingRush', ] + RANDOM_STRATS
+    PROTOSS_STRATS = ['FourGateStalkers', ] + RANDOM_STRATS
 
     AVAILABLE_STRATS = {
         Race.Terran: TERAN_STRATS,
