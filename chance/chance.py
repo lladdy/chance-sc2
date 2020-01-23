@@ -28,6 +28,8 @@ class Chance(KnowledgeBot):
         super().__init__("Chance")
         if strat_name is not None:
             self._force_strat = strat_name
+        else:
+            self._force_strat = None
 
     async def create_plan(self) -> BuildOrder:
         return await self._get_strat(random.choice(self.AVAILABLE_STRATS[self.race])).create_plan()
