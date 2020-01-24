@@ -6,7 +6,7 @@ A Starcraft 2 bot that plays Random and selects its strategy by random.
 
 ## Setup
 
-Install general requirements
+Install requirements
 
 `pip install -r requirements.txt`
 
