@@ -12,6 +12,7 @@ from chance.strats.protoss.four_gate_stalkers import FourGateStalkers
 
 from chance.strats.strat import Strat
 from sc2 import Race
+from sc2.unit import Unit
 from sharpy.knowledges import KnowledgeBot
 from sharpy.plans import BuildOrder
 
@@ -36,6 +37,8 @@ class Chance(KnowledgeBot):
             self._force_strat = None
 
     async def create_plan(self) -> BuildOrder:
+        unit: Unit
+        unit.
         return await self._get_strat(random.choice(self.AVAILABLE_STRATS[self.race])).create_plan()
 
     def _get_strat(self, strat_class: str) -> Strat:
