@@ -11,3 +11,5 @@ __pycache__/
 
 version.txt
 publish/
+tmp/
+replays/

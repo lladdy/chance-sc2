@@ -40,6 +40,6 @@ if __name__ == '__main__':
 
         sc2.run_game(sc2.maps.get("AbyssalReefLE"), [
             bot,
-            Computer(Race.Random, Difficulty.VeryHard)
-        ], realtime=False)
+            Computer(Race.Random, Difficulty.VeryHard),
+        ], save_replay_as=f'replays/replay.SC2Replay', realtime=False)
 

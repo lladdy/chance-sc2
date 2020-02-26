@@ -11,11 +11,6 @@ from sharpy.plans.tactics import *
 from sharpy.plans.tactics.zerg import InjectLarva
 
 
-class NoRetreatAttack(PlanZoneAttack):
-    def _start_attack(self, power: ExtendedPower, attackers: Units):
-        self.retreat_multiplier = 0  # don't retreat
-        return super()._start_attack(power, attackers)
-
 
 class LingRush(Strat):
 
@@ -30,7 +25,7 @@ class LingRush(Strat):
             ActBuilding(UnitTypeId.SPIRE),
             ZergUnit(UnitTypeId.MUTALISK, 10, priority=True)
         ]
-        stop_gas = RequiredAny([RequiredGas(100), RequiredTechReady(UpgradeId.ZERGLINGMOVEMENTSPEED, 0.001)])
+        limit_gas = RequiredAny([RequiredGas(100), RequiredTechReady(UpgradeId.ZERGLINGMOVEMENTSPEED, 0.001)])
         return BuildOrder([
             SequentialList([
                 ActUnit(UnitTypeId.DRONE, UnitTypeId.LARVA, 14),
@@ -41,13 +36,18 @@ class LingRush(Strat):
                 Step(None, ActTech(UpgradeId.ZERGLINGMOVEMENTSPEED, UnitTypeId.SPAWNINGPOOL),
                      skip_until=RequiredGas(100)),
                 ActUnit(UnitTypeId.QUEEN, UnitTypeId.HATCHERY, 1),
-                ActUnit(UnitTypeId.ZERGLING, UnitTypeId.LARVA, 200),
+                ActUnit(UnitTypeId.ZERGLING, UnitTypeId.LARVA, 30),
+                ActBuilding(UnitTypeId.BANELINGNEST, 1),
+                BuildOrder([
+                    Step(None, ActUnit(UnitTypeId.ZERGLING, UnitTypeId.LARVA, 200), skip=RequiredGas(25)),
+                    ActUnit(UnitTypeId.BANELING, UnitTypeId.ZERGLING, 200),
+                ])
+            ]),
+            SequentialList([
+                Step(None, PlanDistributeWorkers(), skip=limit_gas),
+                Step(None, PlanDistributeWorkers(1, 1), skip_until=limit_gas),
             ]),
             in_case_of_air,
-            SequentialList([
-                Step(None, PlanDistributeWorkers(), skip=stop_gas),
-                Step(None, PlanDistributeWorkers(0, 0), skip_until=stop_gas),
-            ]),
             SequentialList(
                 [
                     PlanZoneDefense(),
