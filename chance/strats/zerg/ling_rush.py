@@ -15,12 +15,12 @@ from sharpy.plans.tactics.zerg import InjectLarva
 class LingRush(Strat):
 
     async def create_plan(self) -> BuildOrder:
+        flying_buildings = lambda k: self._bot.enemy_structures.flying.exists and self._bot.supply_used > 30
         in_case_of_air = [
-            Step(RequireCustom(lambda k: self._bot.enemy_structures.flying.exists and self._bot.supply_used > 30),
-                 StepBuildGas(2)),
-            RequiredUnitExists(UnitTypeId.DRONE, 20),
+            Step(flying_buildings, StepBuildGas(2)),
+            ActUnit(UnitTypeId.DRONE, UnitTypeId.LARVA, 20),
             MorphLair(),
-            RequiredUnitExists(UnitTypeId.DRONE, 30),
+            ActUnit(UnitTypeId.DRONE, UnitTypeId.LARVA, 30),
             StepBuildGas(4),
             ActBuilding(UnitTypeId.SPIRE),
             ZergUnit(UnitTypeId.MUTALISK, 10, priority=True)
@@ -39,13 +39,14 @@ class LingRush(Strat):
                 ActUnit(UnitTypeId.ZERGLING, UnitTypeId.LARVA, 30),
                 ActBuilding(UnitTypeId.BANELINGNEST, 1),
                 BuildOrder([
-                    Step(None, ActUnit(UnitTypeId.ZERGLING, UnitTypeId.LARVA, 200), skip=RequiredGas(25)),
-                    ActUnit(UnitTypeId.BANELING, UnitTypeId.ZERGLING, 200),
+                    Step(None, ActUnit(UnitTypeId.ZERGLING, UnitTypeId.LARVA, 200), skip=RequireCustom(lambda k: self._bot.vespene > 25 or flying_buildings)),
+                    Step(None, ActUnit(UnitTypeId.BANELING, UnitTypeId.ZERGLING, 200), skip=RequireCustom(flying_buildings)),
                 ])
             ]),
             SequentialList([
                 Step(None, PlanDistributeWorkers(), skip=limit_gas),
-                Step(None, PlanDistributeWorkers(1, 1), skip_until=limit_gas),
+                Step(limit_gas, PlanDistributeWorkers(1, 1), skip=RequireCustom(flying_buildings)),
+                Step(RequireCustom(flying_buildings), PlanDistributeWorkers()),
             ]),
             in_case_of_air,
             SequentialList(
