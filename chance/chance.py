@@ -42,7 +42,10 @@ class Chance(KnowledgeBot):
             self._force_strat = None
 
     async def create_plan(self) -> BuildOrder:
-        build = random.choice(self.AVAILABLE_STRATS[self.race])
+        if self.knowledge.data_manager.last_result.result == 1:
+            build = self.knowledge.data_manager.last_result.build_used
+        else:
+            build = random.choice(self.AVAILABLE_STRATS[self.race])
         self.knowledge.data_manager.set_build(build)
         return await self._get_strat(build).create_plan()
 
