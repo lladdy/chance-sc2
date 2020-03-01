@@ -21,6 +21,7 @@ class DataManager(ManagerBase):
     enabled: bool
     enable_write: bool
     last_result: Optional[GameResult]
+    last_result_as_race: Optional[GameResult]
 
     def __init__(self):
         self.last_result = None
@@ -34,6 +35,7 @@ class DataManager(ManagerBase):
 
         self.updater = IntervalFunc(self.ai, lambda: self.real_update(), 1)
         self.result = GameResult()
+        self.result.my_race = knowledge.my_race
         self.result.enemy_race = knowledge.enemy_race
 
         if self.enabled:
@@ -53,6 +55,9 @@ class DataManager(ManagerBase):
 
             if self.data.results:
                 self.last_result = self.data.results[-1]
+
+                results_as_current_race = [result for result in self.data.results if result.my_race == self.knowledge.my_race]
+                self.last_result_as_current_race = results_as_current_race[-1] if len(results_as_current_race) > 0 else None
 
     def read_data(self):
         with open(self.file_name, 'r') as handle:
