@@ -55,9 +55,9 @@ class DataManager(ManagerBase):
 
             if self.data.results:
                 self.last_result = self.data.results[-1]
-
-                results_as_current_race = [result for result in self.data.results if result.my_race == self.knowledge.my_race]
-                self.last_result_as_current_race = results_as_current_race[-1] if len(results_as_current_race) > 0 else None
+                self.last_result_as_current_race = next((result for result in reversed(self.data.results)
+                                                         if result.my_race == self.knowledge.my_race),
+                                                        None)
 
     def read_data(self):
         with open(self.file_name, 'r') as handle:
