@@ -1,6 +1,8 @@
 from chance.strats.strat import Strat
 from sc2 import Race, UnitTypeId
-from sharpy.knowledges import KnowledgeBot
+from sc2.units import Units
+from sharpy.general.extended_power import ExtendedPower
+from sharpy.managers.roles import UnitTask
 from sharpy.plans import BuildOrder, Step, StepBuildGas, SequentialList
 from sharpy.plans.acts import ActBase, ActUnit, ActBuilding
 from sharpy.plans.acts.zerg import MorphLair, ZergUnit, AutoOverLord
@@ -9,16 +11,24 @@ from sharpy.plans.tactics import PlanDistributeWorkers, PlanFinishEnemy, PlanZon
 from sharpy.plans.tactics.zerg import InjectLarva
 
 
-class WorkerAttack(ActBase):
+class WorkerAttack(PlanZoneAttack):
 
-    def __init__(self, bot: KnowledgeBot):
-        super().__init__()
-        self._bot = bot
+    def __init__(self):
+        super().__init__(0)
+
+    def _should_attack(self, power: ExtendedPower):
+        return True  # attack no matter what
+
+    def _start_attack(self, power: ExtendedPower, attackers: Units):
+        self.retreat_multiplier = 0  # never retreat, never surrender
+
+        return super()._start_attack(power, attackers)
 
     async def execute(self) -> bool:
-        for worker in self._bot.workers:
-            self._bot.do(worker.attack(self._bot.enemy_start_locations[0]))
-        return True
+        for unit in self.knowledge.ai.workers:
+            self.knowledge.roles.set_task(UnitTask.Attacking, unit)
+        return await super().execute()
+
 
 
 class CleanUp(ActBase):
@@ -66,6 +76,6 @@ class WorkerRush(Strat):
         perform_cleanup = RequireCustom(lambda
                                             k: self._bot.knowledge.enemy_main_zone.is_scouted_at_least_once and not self._bot.knowledge.enemy_main_zone.is_enemys)
         return BuildOrder([
-            Step(None, WorkerAttack(self._bot), skip=perform_cleanup),
+            Step(None, WorkerAttack(), skip=perform_cleanup),
             Step(None, CleanUp(), skip_until=perform_cleanup),
         ])
