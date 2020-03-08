@@ -298,3 +298,9 @@ class PlanZoneAttack(ActBase):
             return self.knowledge.known_enemy_structures.closest_to(our_main).position
 
         return None
+
+
+class PlanAllInZoneAttack(PlanZoneAttack):
+    def _start_attack(self, power: ExtendedPower, attackers: Units):
+        self.retreat_multiplier = 0  # never retreat, never surrender
+        return super()._start_attack(power, attackers)
