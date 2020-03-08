@@ -9,10 +9,10 @@ from sharpy.plans.acts.zerg import MorphLair, ZergUnit, AutoOverLord
 from sharpy.plans.require import RequireCustom, RequiredUnitReady
 from sharpy.plans.tactics import PlanDistributeWorkers, PlanFinishEnemy, PlanZoneGather, PlanZoneDefense, PlanZoneAttack
 from sharpy.plans.tactics.zerg import InjectLarva
+from sharpy.plans.tactics.zone_attack import PlanAllInZoneAttack
 
 
-class WorkerAttack(PlanZoneAttack):
-
+class WorkerAttack(PlanAllInZoneAttack):
     def __init__(self):
         super().__init__(0)
 
@@ -20,7 +20,7 @@ class WorkerAttack(PlanZoneAttack):
         return True  # attack no matter what
 
     def _start_attack(self, power: ExtendedPower, attackers: Units):
-        self.retreat_multiplier = 0  # never retreat, never surrender
+        self.ai.client.game_step = 1  # improve our worker micro
 
         return super()._start_attack(power, attackers)
 
