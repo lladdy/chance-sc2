@@ -1,7 +1,7 @@
 from sc2.units import Units
 
-from general.extended_power import ExtendedPower
-from plans.tactics import PlanZoneAttack
+from sharpy.general.extended_power import ExtendedPower
+from sharpy.plans.tactics import PlanZoneAttack
 
 
 class PlanZoneAttackAllIn(PlanZoneAttack):
