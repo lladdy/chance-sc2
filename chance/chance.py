@@ -17,6 +17,7 @@ from chance.strats.zerg.ravager_rush import RavagerRush
 from chance.strats.protoss.four_gate_stalkers import FourGateStalkers
 
 from chance.strats.strat import Strat
+from config import get_version
 from sc2 import Race
 from sharpy.knowledges import KnowledgeBot
 from sharpy.plans import BuildOrder
@@ -41,6 +42,8 @@ class Chance(KnowledgeBot):
         else:
             self._force_strat = None
 
+        self.random_build_used = False
+
     async def create_plan(self) -> BuildOrder:
         if self.knowledge.data_manager.last_result is not None and self.knowledge.data_manager.last_result.result == 1 \
                 and self.knowledge.data_manager.last_result.build_used != ""\
@@ -48,6 +51,7 @@ class Chance(KnowledgeBot):
             build = self.knowledge.data_manager.last_result.build_used
         else:
             build = random.choice(self.AVAILABLE_STRATS[self.race])
+            self.random_build_used = True
         self.knowledge.data_manager.set_build(build)
         return await self._get_strat(build).create_plan()
 
@@ -56,3 +60,15 @@ class Chance(KnowledgeBot):
             strat_class = self._force_strat
         # constructs the class based on the classes name as a string
         return globals()[strat_class](self)
+
+    def _create_start_msg(self) -> str:
+        msg: str = ""
+
+        if self.name is not None:
+            msg += self.name
+
+        version = get_version()
+        if len(version) >= 2:
+            msg += f" {version[0]} {version[1]} {int(self.random_build_used)}"
+
+        return msg
