@@ -1,15 +1,12 @@
 from chance.strats.strat import Strat
 from sc2 import UnitTypeId
-from sc2.ids.upgrade_id import UpgradeId
-from sc2.units import Units
-from sharpy.general.extended_power import ExtendedPower
 from sharpy.plans import BuildOrder, StepBuildGas, SequentialList, Step
 from sharpy.plans.acts import *
 from sharpy.plans.acts.zerg import AutoOverLord, MorphLair, ZergUnit
-from sharpy.plans.require import RequiredGas, RequireCustom, RequiredUnitExists, RequiredAny, RequiredTechReady
+from sharpy.plans.require import RequiredUnitExists
 from sharpy.plans.tactics import *
 from sharpy.plans.tactics.zerg import InjectLarva
-
+from sharpy.plans.tactics.zone_attack_all_in import PlanZoneAttackAllIn
 
 
 class RavagerRush(Strat):
@@ -52,7 +49,7 @@ class RavagerRush(Strat):
                     AutoOverLord(),
                     InjectLarva(),
                     PlanZoneGather(),
-                    Step(RequiredUnitExists(UnitTypeId.RAVAGER), PlanZoneAttack(10)),
+                    Step(RequiredUnitExists(UnitTypeId.RAVAGER), PlanZoneAttackAllIn(10)),
                     PlanFinishEnemy(),
                 ])
         ])

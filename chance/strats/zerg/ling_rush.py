@@ -1,15 +1,13 @@
 from chance.strats.strat import Strat
 from sc2 import UnitTypeId
 from sc2.ids.upgrade_id import UpgradeId
-from sc2.units import Units
-from sharpy.general.extended_power import ExtendedPower
 from sharpy.plans import BuildOrder, StepBuildGas, SequentialList, Step
 from sharpy.plans.acts import *
 from sharpy.plans.acts.zerg import AutoOverLord, MorphLair, ZergUnit
-from sharpy.plans.require import RequiredGas, RequireCustom, RequiredUnitExists, RequiredAny, RequiredTechReady
+from sharpy.plans.require import RequiredGas, RequireCustom, RequiredAny, RequiredTechReady
 from sharpy.plans.tactics import *
 from sharpy.plans.tactics.zerg import InjectLarva
-
+from sharpy.plans.tactics.zone_attack_all_in import PlanZoneAttackAllIn
 
 
 class LingRush(Strat):
@@ -39,8 +37,10 @@ class LingRush(Strat):
                 ActUnit(UnitTypeId.ZERGLING, UnitTypeId.LARVA, 30),
                 ActBuilding(UnitTypeId.BANELINGNEST, 1),
                 BuildOrder([
-                    Step(None, ActUnit(UnitTypeId.ZERGLING, UnitTypeId.LARVA, 200), skip=RequireCustom(lambda k: self._bot.vespene > 25 or flying_buildings)),
-                    Step(None, ActUnit(UnitTypeId.BANELING, UnitTypeId.ZERGLING, 200), skip=RequireCustom(flying_buildings)),
+                    Step(None, ActUnit(UnitTypeId.ZERGLING, UnitTypeId.LARVA, 200),
+                         skip=RequireCustom(lambda k: self._bot.vespene > 25 or flying_buildings)),
+                    Step(None, ActUnit(UnitTypeId.BANELING, UnitTypeId.ZERGLING, 200),
+                         skip=RequireCustom(flying_buildings)),
                 ])
             ]),
             SequentialList([
@@ -55,7 +55,7 @@ class LingRush(Strat):
                     AutoOverLord(),
                     InjectLarva(),
                     PlanZoneGather(),
-                    Step(RequiredTechReady(UpgradeId.ZERGLINGMOVEMENTSPEED), PlanZoneAttack(10)),
+                    Step(RequiredTechReady(UpgradeId.ZERGLINGMOVEMENTSPEED), PlanZoneAttackAllIn(10)),
                     PlanFinishEnemy(),
                 ])
         ])

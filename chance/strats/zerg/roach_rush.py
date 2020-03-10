@@ -6,6 +6,7 @@ from sharpy.plans.acts.zerg import AutoOverLord, MorphLair, ZergUnit
 from sharpy.plans.require import RequiredUnitExists
 from sharpy.plans.tactics import *
 from sharpy.plans.tactics.zerg import InjectLarva
+from sharpy.plans.tactics.zone_attack_all_in import PlanZoneAttackAllIn
 
 
 class RoachRush(Strat):
@@ -42,7 +43,7 @@ class RoachRush(Strat):
                     AutoOverLord(),
                     InjectLarva(),
                     PlanZoneGather(),
-                    Step(RequiredUnitExists(UnitTypeId.ROACH, 7), PlanZoneAttack(1)),
+                    Step(RequiredUnitExists(UnitTypeId.ROACH, 7), PlanZoneAttackAllIn(1)),
                     PlanFinishEnemy(),
                 ])
         ])
