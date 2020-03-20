@@ -20,10 +20,10 @@ class LadderZip:
         self.archive = archive_name + ".zip"
         self.files = [
             "chance",
-            "jsonpickle",
-            "sc2",
-            "sharpy",
-            "sc2pathlibp",
+            "sharpy-sc2/sharpy",
+            "sharpy-sc2/python-sc2/sc2",
+            "sharpy-sc2/sc2pathlibp",
+            "sharpy-sc2/jsonpickle",
             "requirements.txt",
             "version.txt",
             "config.py",

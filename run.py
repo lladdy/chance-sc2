@@ -1,5 +1,9 @@
 import argparse
+import os
 import sys
+
+sys.path.insert(1, "sharpy-sc2")
+sys.path.insert(1, os.path.join("sharpy-sc2", "python-sc2"))
 
 import sc2
 from chance import run_ladder_game
