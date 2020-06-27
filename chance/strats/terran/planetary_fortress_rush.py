@@ -3,7 +3,7 @@ from sc2 import UnitTypeId
 from sc2.ids.upgrade_id import UpgradeId
 from sharpy.plans import BuildOrder, SequentialList, StepBuildGas, Step
 from sharpy.plans.acts import *
-from sharpy.plans.acts.terran import AutoDepot, ActBuildAddon
+from sharpy.plans.acts.terran import AutoDepot, ActBuildAddon, MorphPlanetary
 from sharpy.plans.require import RequiredAny, RequiredGas, RequiredUnitExists, RequiredTechReady
 from sharpy.plans.tactics import *
 from sharpy.plans.tactics.terran import LowerDepots, ManTheBunkers, Repair, ContinueBuilding, PlanZoneGatherTerran

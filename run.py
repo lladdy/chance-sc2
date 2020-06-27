@@ -42,7 +42,7 @@ if __name__ == '__main__':
         else:
             bot = Bot(race_map[args.ForceRace], Chance(args.ForceStrategy))
 
-        sc2.run_game(sc2.maps.get("AbyssalReefLE"), [
+        sc2.run_game(sc2.maps.get("Simple64"), [
             bot,
             Computer(Race.Random, Difficulty.VeryHard),
         ], save_replay_as=f'replays/replay.SC2Replay', realtime=False)
