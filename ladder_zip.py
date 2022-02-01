@@ -1,117 +1,49 @@
+# Script for creating Ladder Manager compatible Zip archives.
+
 import os
-import shutil
+import argparse
 
-import zipfile
-from typing import Tuple, List, Optional
 
+# import sub_module  # Important, do not remove!
 from version import update_version_txt
-
-# Adapted from https://github.com/DrInfy/sharpy-sc2/blob/master/dummy_ladder_zip.py
+from bot_loader import LadderZip
 
 root_dir = os.path.dirname(os.path.abspath(__file__))
 
-class LadderZip:
-    archive: str
-    files: List[str]
-    
-    def __init__(self, archive_name: str, race: str):
-        self.name = archive_name
-        self.race = race
-        self.archive = archive_name + ".zip"
-        self.files = [
-            "chance",
-            "sharpy-sc2/sharpy",
-            "sharpy-sc2/python-sc2/sc2",
-            "sharpy-sc2/sc2pathlibp",
-            "sharpy-sc2/jsonpickle",
-            "requirements.txt",
-            "version.txt",
-            "config.py",
-            "config.ini",
-            "ladderbots.json",
-            "run.py",
-        ]
+# Files or folders common to all bots.
+common = [
+    (os.path.join("sharpy-sc2", "jsonpickle"), "jsonpickle"),
+    (os.path.join("sharpy-sc2", "sharpy"), "sharpy"),
+    (os.path.join("sharpy-sc2", "python-sc2", "sc2"), "sc2"),
+    (os.path.join("sharpy-sc2", "sc2pathlibp"), "sc2pathlibp"),
+    ("requirements.txt", None),
+    ("version.txt", None),
+    (os.path.join("sharpy-sc2", "config.py"), "config.py"),
+    ("config.ini", None),
+    (os.path.join("sharpy-sc2", "ladder.py"), "ladder.py"),
+    ("ladderbots.json", None),
+]
 
-    def pre_zip(self):
-        """ Override this as needed, actions to do before creating the zip"""
-        pass
+# Files or folders to be ignored from the archive.
+ignored = [
+    "__pycache__",
+]
 
-    def post_zip(self):
-        """ Override this as needed, actions to do after creating the zip"""
-        pass
-
-
-def zipdir(path: str, ziph: zipfile.ZipFile, remove_path: Optional[str] = None):
-    # ziph is zipfile handle
-    for root, dirs, files in os.walk(path):
-        for file in files:
-            if "__pycache__" not in root:
-                path_to_file = os.path.join(root, file)
-                if remove_path:
-                    ziph.write(path_to_file, path_to_file.replace(remove_path, ""))
-                else:
-                    ziph.write(path_to_file)
-
-
-def create_ladder_zip(archive_zip: LadderZip):
-    update_version_txt()
-    print()
-
-    archive_name = archive_zip.archive
-
-    bot_specific_paths = archive_zip.files
-
-    # Remove previous archive
-    if os.path.isfile(archive_name):
-        print(f"Deleting {archive_name}")
-        os.remove(archive_name)
-
-    files_to_zip = []
-    directories_to_zip = []
-    files_to_delete = []
-
-    archive_zip.pre_zip()
-
-    for file in bot_specific_paths:
-        if not os.path.exists(file):
-            raise ValueError(f"'{file}' does not exist.")
-
-        if os.path.isdir(file):
-            directories_to_zip.append(file)
-        else:
-            files_to_zip.append(file)
-
-    print()
-    print(f"Zipping {archive_name}")
-    zipf = zipfile.ZipFile(archive_name, 'w', zipfile.ZIP_DEFLATED)
-    for file in files_to_zip:
-        zipf.write(file)
-    for directory in directories_to_zip:
-        zipdir(directory, zipf)
-    zipf.close()
-
-    print()
-    for file in files_to_delete:
-
-        if os.path.isdir(file):
-            print(f"Deleting directory {file}")
-            # os.rmdir(file)
-            shutil.rmtree(file)
-        else:
-            print(f"Deleting file {file}")
-            os.remove(file)
-
-    if not os.path.exists('publish'):
-        os.mkdir('publish')
-
-    shutil.move(archive_name, os.path.join("publish", archive_name))
-    archive_zip.post_zip()
-
-    print(f"\nSuccessfully created {os.path.join('publish', archive_name)}")
+ladder_zip = LadderZip(
+    "Chance", "Random", [("chance", None), ("run.py", None)], common
+)
 
 
 def main():
-    create_ladder_zip(LadderZip('Chance', 'Random'))
+    parser = argparse.ArgumentParser(
+        description="Create a Ladder Manager ready zip archive for SC2 AI, AI Arena, Probots, ..."
+    )
+    parser.add_argument("-e", "--exe", help="Also make executable (Requires pyinstaller)", action="store_true")
+    args = parser.parse_args()
+
+    update_version_txt()
+
+    ladder_zip.create_ladder_zip(args.exe)
 
 
 if __name__ == "__main__":
