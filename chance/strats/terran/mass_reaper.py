@@ -8,8 +8,8 @@ Bot made by Burny
 
 import random
 
-import sc2
 from chance.strats.strat import Strat
+from sc2.bot_ai import BotAI
 from sc2.ids.ability_id import AbilityId
 from sc2.ids.unit_typeid import UnitTypeId
 from sc2.position import Point2, Point3
@@ -20,7 +20,7 @@ class MassReaper(Strat):
     """
     Adapted from https://github.com/BurnySc2/python-sc2/blob/develop/examples/terran/mass_reaper.py
     """
-    def __init__(self, _bot: sc2.BotAI):
+    def __init__(self, _bot: BotAI):
         super().__init__(_bot)
         self.combinedActions = []
 

@@ -2,13 +2,15 @@ import argparse
 import os
 import sys
 
+from sc2 import maps
+from sc2.data import Race, Difficulty
+from sc2.main import run_game
+
 sys.path.insert(1, "sharpy-sc2")
 sys.path.insert(1, os.path.join("sharpy-sc2", "python-sc2"))
 
-import sc2
 from chance import run_ladder_game
 from chance.chance import Chance
-from sc2 import Race, Difficulty
 from sc2.player import Bot, Computer
 
 race_map = {
@@ -42,7 +44,7 @@ if __name__ == '__main__':
         else:
             bot = Bot(race_map[args.ForceRace], Chance(args.ForceStrategy))
 
-        sc2.run_game(sc2.maps.get("Simple64"), [
+        run_game(maps.get("Simple64"), [
             bot,
             Computer(Race.Random, Difficulty.VeryHard),
         ], save_replay_as=f'replays/replay.SC2Replay', realtime=False)

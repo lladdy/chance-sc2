@@ -1,9 +1,9 @@
 from chance.strats.strat import Strat
-from sc2 import UnitTypeId
+from sc2.ids.unit_typeid import UnitTypeId
 from sharpy.plans import BuildOrder, StepBuildGas, SequentialList, Step
 from sharpy.plans.acts import *
 from sharpy.plans.acts.zerg import AutoOverLord, MorphLair, ZergUnit
-from sharpy.plans.require import RequiredUnitExists
+from sharpy.plans.require import UnitExists
 from sharpy.plans.tactics import *
 from sharpy.plans.tactics.zerg import InjectLarva
 from sharpy.plans.tactics.zone_attack_all_in import PlanZoneAttackAllIn
@@ -38,12 +38,12 @@ class RoachRush(Strat):
             in_case_of_air,
             SequentialList(
                 [
-                    PlanDistributeWorkers(),
+                    DistributeWorkers(),
                     PlanZoneDefense(),
                     AutoOverLord(),
                     InjectLarva(),
                     PlanZoneGather(),
-                    Step(RequiredUnitExists(UnitTypeId.ROACH, 7), PlanZoneAttackAllIn(1)),
+                    Step(UnitExists(UnitTypeId.ROACH, 7), PlanZoneAttackAllIn(1)),
                     PlanFinishEnemy(),
                 ])
         ])

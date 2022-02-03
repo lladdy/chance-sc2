@@ -1,8 +1,8 @@
 from chance.strats.strat import Strat
-from sc2 import UnitTypeId
+from sc2.ids.unit_typeid import UnitTypeId
 from sc2.units import Units
 from sharpy.general.extended_power import ExtendedPower
-from sharpy.managers.roles import UnitTask
+from sharpy.managers.core.roles import UnitTask
 from sharpy.plans import BuildOrder, SequentialList
 from sharpy.plans.acts import *
 from sharpy.plans.acts.terran import AutoDepot
@@ -15,7 +15,7 @@ class AllInPlanZoneAttack(PlanZoneAttack):
     def _start_attack(self, power: ExtendedPower, attackers: Units):
         self.retreat_multiplier = 0  # never retreat, never surrender
 
-        for unit in self.cache.own(UnitTypeId.SCV).closest_n_units(self.knowledge.enemy_start_location, 5):
+        for unit in self.cache.own(UnitTypeId.SCV).closest_n_units(self.knowledge.zone_manager.enemy_start_location, 5):
             self.knowledge.roles.set_task(UnitTask.Attacking, unit)
 
         return super()._start_attack(power, attackers)
@@ -43,7 +43,7 @@ class FourRax(Strat):
                     PlanCancelBuilding(),
                     LowerDepots(),
                     PlanZoneDefense(),
-                    PlanDistributeWorkers(),
+                    DistributeWorkers(),
                     ManTheBunkers(),
                     Repair(),
                     ContinueBuilding(),

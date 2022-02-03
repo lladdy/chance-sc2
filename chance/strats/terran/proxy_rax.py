@@ -2,7 +2,7 @@ import sc2
 from chance.strats.strat import Strat
 
 from sc2.constants import *
-from sc2.helpers import ControlGroup
+from sc2.helpers.control_group import ControlGroup
 
 
 class ProxyRax(Strat):

@@ -1,5 +1,6 @@
 from chance.strats.strat import Strat
-from sc2 import Race, UnitTypeId
+from sc2.data import Race
+from sc2.ids.unit_typeid import UnitTypeId
 from sc2.units import Units
 from sharpy.general.extended_power import ExtendedPower
 from sharpy.managers.core.roles import UnitTask

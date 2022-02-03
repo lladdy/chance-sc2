@@ -5,22 +5,22 @@ import random
 from typing import Optional, List
 
 from chance.strats.random.worker_rush import WorkerRush
-# # noinspection PyUnresolvedReferences
-# from chance.strats.terran.four_rax import FourRax
-# # noinspection PyUnresolvedReferences
-# from chance.strats.terran.planetary_fortress_rush import PlanetaryFortressRush
-# # noinspection PyUnresolvedReferences
-# from chance.strats.zerg.ling_rush import LingRush
-# # noinspection PyUnresolvedReferences
-# from chance.strats.zerg.roach_rush import RoachRush
-# # noinspection PyUnresolvedReferences
-# from chance.strats.zerg.ravager_rush import RavagerRush
-# # noinspection PyUnresolvedReferences
-# from chance.strats.protoss.four_gate_stalkers import FourGateStalkers
+# noinspection PyUnresolvedReferences
+from chance.strats.terran.four_rax import FourRax
+# noinspection PyUnresolvedReferences
+from chance.strats.terran.planetary_fortress_rush import PlanetaryFortressRush
+# noinspection PyUnresolvedReferences
+from chance.strats.zerg.ling_rush import LingRush
+# noinspection PyUnresolvedReferences
+from chance.strats.zerg.roach_rush import RoachRush
+# noinspection PyUnresolvedReferences
+from chance.strats.zerg.ravager_rush import RavagerRush
+# noinspection PyUnresolvedReferences
+from chance.strats.protoss.four_gate_stalkers import FourGateStalkers
 
 from chance.strats.strat import Strat
 from config import get_version
-from sc2 import Race
+from sc2.data import Race
 from sharpy.knowledges import KnowledgeBot
 from sharpy.plans import BuildOrder
 
