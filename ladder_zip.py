@@ -15,12 +15,12 @@ common = [
     (os.path.join("sharpy-sc2", "jsonpickle"), "jsonpickle"),
     (os.path.join("sharpy-sc2", "sharpy"), "sharpy"),
     (os.path.join("sharpy-sc2", "python-sc2", "sc2"), "sc2"),
-    (os.path.join("sharpy-sc2", "sc2pathlibp"), "sc2pathlibp"),
+    (os.path.join("sharpy-sc2", "sc2pathlib"), "sc2pathlib"),
+    (os.path.join("sharpy-sc2", "config.py"), "config.py"),
+    (os.path.join("sharpy-sc2", "ladder.py"), "ladder.py"),
     ("requirements.txt", None),
     ("version.txt", None),
-    (os.path.join("sharpy-sc2", "config.py"), "config.py"),
     ("config.ini", None),
-    (os.path.join("sharpy-sc2", "ladder.py"), "ladder.py"),
     ("ladderbots.json", None),
 ]
 
