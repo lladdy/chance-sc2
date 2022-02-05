@@ -28,7 +28,7 @@ class MorphProxyPlanetary(MorphPlanetary):
         for target in start_buildings:
             if target.is_ready:
                 if self.knowledge.can_afford(self.ability_type):
-                    self.do(target(self.ability_type))
+                    target(self.ability_type)
 
                 self.knowledge.reserve_costs(self.ability_type)
                 target_count += 1
