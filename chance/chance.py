@@ -1,8 +1,9 @@
+import abc
 import random
 
 # STRAT IMPORTS
 # noinspection PyUnresolvedReferences
-from typing import Optional, List
+from typing import Optional, List, Union
 
 from chance.strats.random.worker_rush import WorkerRush
 # noinspection PyUnresolvedReferences
@@ -19,11 +20,13 @@ from chance.strats.zerg.roach_rush import RoachRush
 from chance.strats.zerg.ravager_rush import RavagerRush
 # noinspection PyUnresolvedReferences
 from chance.strats.protoss.four_gate_stalkers import FourGateStalkers
+# noinspection PyUnresolvedReferences
+from dummies.protoss import AdeptRush
 
 from chance.strats.strat import Strat
 from config import get_version
 from sc2.data import Race
-from sharpy.knowledges import KnowledgeBot
+from sharpy.knowledges import KnowledgeBot, SkeletonBot
 from sharpy.plans import BuildOrder
 
 
@@ -31,7 +34,7 @@ class Chance(KnowledgeBot):
     RANDOM_STRATS = ['WorkerRush', ]
     TERAN_STRATS = ['FourRax', 'FiveRax', 'PlanetaryFortressRush', ] + RANDOM_STRATS
     ZERG_STRATS = ['LingRush', 'RavagerRush', 'RoachRush', ] + RANDOM_STRATS
-    PROTOSS_STRATS = ['FourGateStalkers', ] + RANDOM_STRATS
+    PROTOSS_STRATS = ['FourGateStalkers', 'AdeptRush', ] + RANDOM_STRATS
 
     AVAILABLE_STRATS = {
         Race.Terran: TERAN_STRATS,
@@ -60,11 +63,21 @@ class Chance(KnowledgeBot):
         await self.chat_send(f'TAG: {build}')
         return await self._get_strat(build).create_plan()
 
-    def _get_strat(self, strat_class: str) -> Strat:
+    def _is_dummy_bot_class(self, strat_class) -> bool:
+        return type(strat_class) == abc.ABCMeta  # hacky way to detect that this is a sharpy dummy class
+
+    def _instantiate_strat(self, strat_class: str):
+        class_type = globals()[strat_class]
+        if self._is_dummy_bot_class(class_type):
+            return class_type()
+        else:
+            return class_type(self)
+
+    def _get_strat(self, strat_class: str) -> Union[Strat, SkeletonBot]:
         if self._force_strat is not None:
             strat_class = self._force_strat
         # constructs the class based on the classes name as a string
-        return globals()[strat_class](self)
+        return self._instantiate_strat(strat_class)
 
     def _create_start_msg(self) -> str:
         msg: str = ""
