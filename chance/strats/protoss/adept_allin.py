@@ -29,9 +29,6 @@ class TheAttack(PlanZoneAttack):
 
 class AdeptAllIn(Strat):
 
-    def __init__(self, bot: KnowledgeBot):
-        super().__init__(bot)
-
     async def create_plan(self) -> BuildOrder:
         number = random.randint(10, 15)
         attack = TheAttack(number + 1)

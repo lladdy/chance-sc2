@@ -19,8 +19,6 @@ class TheAttack(PlanZoneAttack):
 
 
 class MacroRobo(Strat):
-    def __init__(self, bot: KnowledgeBot):
-        super().__init__(bot)
 
     async def create_plan(self) -> BuildOrder:
         attack = TheAttack(4)

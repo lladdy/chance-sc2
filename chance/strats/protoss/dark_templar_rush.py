@@ -8,9 +8,6 @@ from sc2.ids.upgrade_id import UpgradeId
 
 class DarkTemplarRush(Strat):
 
-    def __init__(self, bot: KnowledgeBot):
-        super().__init__(bot)
-
     async def create_plan(self) -> BuildOrder:
         self._bot.building_solver.wall_type = 2  # WallType.ProtossMainZerg
 

@@ -19,9 +19,6 @@ class FourGateStalkers(Strat):
     Adapted from https://lotv.spawningtool.com/build/62827/
     """
 
-    def __init__(self, bot: KnowledgeBot):
-        super().__init__(bot)
-
     async def create_plan(self) -> BuildOrder:
         attack = TheAttack(4)
         return BuildOrder([

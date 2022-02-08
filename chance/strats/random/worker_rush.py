@@ -31,7 +31,6 @@ class WorkerAttack(PlanZoneAttackAllIn):
         return await super().execute()
 
 
-
 class CleanUp(ActBase):
     def __init__(self):
         super().__init__()
@@ -70,9 +69,6 @@ class CleanUp(ActBase):
 
 
 class WorkerRush(Strat):
-    def __init__(self, _bot):
-        super().__init__(_bot)
-
     async def create_plan(self) -> BuildOrder:
         perform_cleanup = RequireCustom(lambda
                                             k: self._bot.zone_manager.enemy_main_zone.is_scouted_at_least_once and not self._bot.zone_manager.enemy_main_zone.is_enemys)
