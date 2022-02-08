@@ -28,7 +28,6 @@ class TheAttack(PlanZoneAttack):
 
 
 class AdeptAllIn(Strat):
-
     async def create_plan(self) -> BuildOrder:
         number = random.randint(10, 15)
         attack = TheAttack(number + 1)
