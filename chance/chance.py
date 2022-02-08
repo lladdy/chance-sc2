@@ -16,7 +16,7 @@ from chance.strats.zerg.roach_rush import RoachRush
 # noinspection PyUnresolvedReferences
 from chance.strats.zerg.ravager_rush import RavagerRush
 # noinspection PyUnresolvedReferences
-from chance.strats.protoss import FourGateStalkers, AdeptAllIn
+from chance.strats.protoss import *
 
 from chance.strats.strat import Strat
 from config import get_version
@@ -29,7 +29,7 @@ class Chance(KnowledgeBot):
     RANDOM_STRATS = ['WorkerRush', ]
     TERAN_STRATS = ['FourRax', 'FiveRax', 'PlanetaryFortressRush', ] + RANDOM_STRATS
     ZERG_STRATS = ['LingRush', 'RavagerRush', 'RoachRush', ] + RANDOM_STRATS
-    PROTOSS_STRATS = ['FourGateStalkers', 'AdeptAllIn', ] + RANDOM_STRATS
+    PROTOSS_STRATS = ['FourGateStalkers', 'AdeptAllIn', 'MacroRobo', ] + RANDOM_STRATS
 
     AVAILABLE_STRATS = {
         Race.Terran: TERAN_STRATS,
