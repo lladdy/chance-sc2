@@ -8,6 +8,8 @@ from chance.strats.random.worker_rush import WorkerRush
 # noinspection PyUnresolvedReferences
 from chance.strats.terran.four_rax import FourRax
 # noinspection PyUnresolvedReferences
+from chance.strats.terran.five_rax import FiveRax
+# noinspection PyUnresolvedReferences
 from chance.strats.terran.planetary_fortress_rush import PlanetaryFortressRush
 # noinspection PyUnresolvedReferences
 from chance.strats.zerg.ling_rush import LingRush
@@ -27,7 +29,7 @@ from sharpy.plans import BuildOrder
 
 class Chance(KnowledgeBot):
     RANDOM_STRATS = ['WorkerRush', ]
-    TERAN_STRATS = ['FourRax', 'PlanetaryFortressRush', ] + RANDOM_STRATS
+    TERAN_STRATS = ['FourRax', 'FiveRax', 'PlanetaryFortressRush', ] + RANDOM_STRATS
     ZERG_STRATS = ['LingRush', 'RavagerRush', 'RoachRush', ] + RANDOM_STRATS
     PROTOSS_STRATS = ['FourGateStalkers', ] + RANDOM_STRATS
 
