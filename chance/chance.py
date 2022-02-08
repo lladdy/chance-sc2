@@ -1,10 +1,7 @@
-import abc
 import random
 
 # STRAT IMPORTS
 # noinspection PyUnresolvedReferences
-from typing import Optional, List, Union
-
 from chance.strats.random.worker_rush import WorkerRush
 # noinspection PyUnresolvedReferences
 from chance.strats.terran.four_rax import FourRax
@@ -24,7 +21,7 @@ from chance.strats.protoss.four_gate_stalkers import FourGateStalkers
 from chance.strats.strat import Strat
 from config import get_version
 from sc2.data import Race
-from sharpy.knowledges import KnowledgeBot, SkeletonBot
+from sharpy.knowledges import KnowledgeBot
 from sharpy.plans import BuildOrder
 
 
@@ -65,19 +62,11 @@ class Chance(KnowledgeBot):
         await self.chat_send(f'Tag: {build}')
         return await self._get_strat(build).create_plan()
 
-    def _is_dummy_bot_class(self, strat_class) -> bool:
-        return type(strat_class) == abc.ABCMeta  # hacky way to detect that this is a sharpy dummy class
-
-    def _instantiate_strat(self, strat_class: str):
-        class_type = globals()[strat_class]
-        if self._is_dummy_bot_class(class_type):
-            return class_type()
-        else:
-            return class_type(self)
-
-    def _get_strat(self, strat_class: str) -> Union[Strat, SkeletonBot]:
+    def _get_strat(self, strat_class: str) -> Strat:
+        if self._force_strat is not None:
+            strat_class = self._force_strat
         # constructs the class based on the classes name as a string
-        return self._instantiate_strat(strat_class)
+        return globals()[strat_class](self)
 
     def _create_start_msg(self) -> str:
         msg: str = ""
