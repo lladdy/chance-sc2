@@ -60,7 +60,7 @@ class Chance(KnowledgeBot):
             build = random.choice(self.AVAILABLE_STRATS[self.race])
             self.random_build_used = True
         self.knowledge.data_manager.set_build(build)
-        await self.chat_send(f'TAG: {build}')
+        await self.chat_send(f'Tag: {build}')
         return await self._get_strat(build).create_plan()
 
     def _is_dummy_bot_class(self, strat_class) -> bool:
