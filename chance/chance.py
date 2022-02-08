@@ -1,24 +1,16 @@
 import random
 
 # STRAT IMPORTS
+from chance.strats.random import *
 # noinspection PyUnresolvedReferences
-from chance.strats.random.worker_rush import WorkerRush
+from chance.strats.terran import *
 # noinspection PyUnresolvedReferences
-from chance.strats.terran.four_rax import FourRax
-# noinspection PyUnresolvedReferences
-from chance.strats.terran.five_rax import FiveRax
-# noinspection PyUnresolvedReferences
-from chance.strats.terran.planetary_fortress_rush import PlanetaryFortressRush
-# noinspection PyUnresolvedReferences
-from chance.strats.zerg.ling_rush import LingRush
-# noinspection PyUnresolvedReferences
-from chance.strats.zerg.roach_rush import RoachRush
-# noinspection PyUnresolvedReferences
-from chance.strats.zerg.ravager_rush import RavagerRush
+from chance.strats.zerg import *
 # noinspection PyUnresolvedReferences
 from chance.strats.protoss import *
 
-from chance.strats.strat import Strat
+from chance.strats import Strat
+from chance.util import get_strats_from_module
 from config import get_version
 from sc2.data import Race
 from sharpy.knowledges import KnowledgeBot
@@ -26,10 +18,10 @@ from sharpy.plans import BuildOrder
 
 
 class Chance(KnowledgeBot):
-    RANDOM_STRATS = ['WorkerRush', ]
-    TERAN_STRATS = ['FourRax', 'FiveRax', 'PlanetaryFortressRush', ] + RANDOM_STRATS
-    ZERG_STRATS = ['LingRush', 'RavagerRush', 'RoachRush', ] + RANDOM_STRATS
-    PROTOSS_STRATS = ['FourGateStalkers', 'AdeptAllIn', 'MacroRobo', ] + RANDOM_STRATS
+    RANDOM_STRATS = get_strats_from_module('chance.strats.random')
+    TERAN_STRATS = get_strats_from_module('chance.strats.terran') + RANDOM_STRATS
+    ZERG_STRATS = get_strats_from_module('chance.strats.zerg') + RANDOM_STRATS
+    PROTOSS_STRATS = get_strats_from_module('chance.strats.protoss') + RANDOM_STRATS
 
     AVAILABLE_STRATS = {
         Race.Terran: TERAN_STRATS,
