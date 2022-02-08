@@ -59,6 +59,10 @@ class Chance(KnowledgeBot):
         else:
             build = random.choice(self.AVAILABLE_STRATS[self.race])
             self.random_build_used = True
+
+        if self._force_strat is not None:
+            build = self._force_strat
+
         self.knowledge.data_manager.set_build(build)
         await self.chat_send(f'Tag: {build}')
         return await self._get_strat(build).create_plan()
@@ -74,8 +78,6 @@ class Chance(KnowledgeBot):
             return class_type(self)
 
     def _get_strat(self, strat_class: str) -> Union[Strat, SkeletonBot]:
-        if self._force_strat is not None:
-            strat_class = self._force_strat
         # constructs the class based on the classes name as a string
         return self._instantiate_strat(strat_class)
 
