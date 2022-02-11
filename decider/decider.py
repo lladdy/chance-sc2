@@ -29,40 +29,35 @@ class Decider:
 # FourRax = 9 choices 9 Wins
 # FiveRax =  1 choices  1 Wins
 
-scalar = 0.1
-samples = np.array([55, 10])
-wins = np.array([50, 10])
-win_perc = wins/samples
 
-initial_prob = (expit(samples*scalar)-0.5)*2
-prob_inverse = 1-initial_prob
-adjusted_probs = win_perc+prob_inverse
-prob_sum = np.sum(adjusted_probs)
-scaled_probs = adjusted_probs/prob_sum
-prob_check_sum = np.sum(scaled_probs)
+def calc_choice_probabilities(samples: np.array, wins: np.array) -> np.array:
+    scalar = 0.1
+    win_perc = wins/samples
 
-print(f'Samples: {samples}')
-print(f'Wins: {wins}')
-print(f'Win %: {win_perc}')
-print(f'Initial Prob: {initial_prob}')
-print(f'Prob Inv: {prob_inverse}')
-print(f'Actual Prob: {adjusted_probs}')
-print(f'Prob Sum: {prob_sum}')
-print(f'Scaled Prob: {scaled_probs}')
-print(f'Prob Sum: {prob_check_sum}')
+    # calculate a weight that will make low sample size choices more likely
+    probability_weight = 1-(expit(samples*scalar)-0.5)*2
+
+    # Apply that weight to each choice's win percentage
+    weighted_probabilities = win_perc+probability_weight
+
+    # Scale probabilities back down so they sum to 1.0 again.
+    prob_sum = np.sum(weighted_probabilities)
+    scaled_probs = weighted_probabilities/prob_sum
+
+    # Sanity check in case of bug
+    prob_check_sum = np.sum(scaled_probs)
+    assert prob_check_sum == 1.0, f'Is there a bug? prob_check_sum was {prob_check_sum}'
+
+    # print(f'Samples: {samples}')
+    # print(f'Wins: {wins}')
+    # print(f'Win %: {win_perc}')
+    # print(f'Prob Inv: {probability_weight}')
+    # print(f'Actual Prob: {weighted_probabilities}')
+    # print(f'Prob Sum: {prob_sum}')
+    # print(f'Scaled Prob: {scaled_probs}')
+    # print(f'Prob Sum: {prob_check_sum}')
+    return scaled_probs
 
 
-
-# num_choices = 2
-# one_hundred_over_all_choices = 1.0/num_choices
-# print(one_hundred_over_all_choices)
-# win_percentage = 1.0  # starts at 0.0
-# num_samples = 1
-#
-# samples_prob = (expit(num_samples)-0.5)*2
-# print(samples_prob)
-# shaped_probability = win_percentage*samples_prob
-# print(shaped_probability)
-# actual_probability = (one_hundred_over_all_choices-samples_prob)
-# print(actual_probability)
+calc_choice_probabilities(np.array([55, 10]), np.array([50, 10]))
 
