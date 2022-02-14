@@ -3,7 +3,7 @@ from .cannon_rush import CannonRush
 from .dark_templar_rush import DarkTemplarRush
 from .disruptors import Distruptors
 from .four_gate_stalkers import FourGateStalkers
-from .gate4 import Stalkers4Gate
+from .stalkers_4_gate import Stalkers4Gate
 from .macro_robo import MacroRobo
 from .macro_stalkers import MacroStalkers
 from .macro_voidray import MacroVoidray

@@ -1,26 +1,22 @@
 from typing import Optional, List
 
-from sc2.data import Race
+from chance.strats import Strat
 from sc2.ids.ability_id import AbilityId
 from sc2.ids.unit_typeid import UnitTypeId
+from sc2.ids.upgrade_id import UpgradeId
 from sharpy.combat.group_combat_manager import GroupCombatManager
 from sharpy.managers.core import *
 from sharpy.managers.core import ActManager, GatherPointSolver
 from sharpy.managers.core import EnemyUnitsManager
 from sharpy.managers.extensions import MemoryManager
+from sharpy.plans import BuildOrder, Step, SequentialList
 from sharpy.plans.acts import *
 from sharpy.plans.acts.protoss import *
 from sharpy.plans.require import *
 from sharpy.plans.tactics import *
-from sharpy.plans import BuildOrder, Step, SequentialList, StepBuildGas
-from sharpy.knowledges import SkeletonBot
-from sc2.ids.upgrade_id import UpgradeId
 
 
-class Stalkers4Gate(SkeletonBot):
-    def __init__(self):
-        super().__init__("The Sharp Four")
-
+class Stalkers4Gate(Strat):
     def configure_managers(self) -> Optional[List[ManagerBase]]:
         return [
             MemoryManager(),
@@ -37,10 +33,10 @@ class Stalkers4Gate(SkeletonBot):
             CooldownManager(),
             GroupCombatManager(),
             GatherPointSolver(),
-            ActManager(self.create_plan()),
+            ActManager(self.create_plan),
         ]
 
-    def create_plan(self) -> BuildOrder:
+    async def create_plan(self) -> BuildOrder:
         attack = PlanZoneAttack(6)
         attack.attack_on_advantage = False  # Disables requirement for game analyzer
         return BuildOrder(
@@ -64,7 +60,7 @@ class Stalkers4Gate(SkeletonBot):
                     AutoPylon(),
                     ActUnit(UnitTypeId.PROBE, UnitTypeId.NEXUS, 22),
                     SequentialList(
-                        Step(UnitReady(UnitTypeId.CYBERNETICSCORE, 1), GridBuilding(UnitTypeId.TWILIGHTCOUNCIL, 1),),
+                        Step(UnitReady(UnitTypeId.CYBERNETICSCORE, 1), GridBuilding(UnitTypeId.TWILIGHTCOUNCIL, 1), ),
                         Step(UnitReady(UnitTypeId.TWILIGHTCOUNCIL, 1), Tech(UpgradeId.BLINKTECH)),
                     ),
                     SequentialList(
@@ -92,9 +88,3 @@ class Stalkers4Gate(SkeletonBot):
                 PlanFinishEnemy(),
             ),
         )
-
-
-class LadderBot(Stalkers4Gate):
-    @property
-    def my_race(self):
-        return Race.Protoss
