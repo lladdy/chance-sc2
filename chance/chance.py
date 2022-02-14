@@ -56,8 +56,6 @@ class Chance(KnowledgeBot):
         return await self._get_strat(build).create_plan()
 
     def _get_strat(self, strat_class: str) -> Strat:
-        if self._force_strat is not None:
-            strat_class = self._force_strat
         # constructs the class based on the classes name as a string
         return globals()[strat_class](self)
 
