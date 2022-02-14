@@ -25,7 +25,7 @@ class Decider:
             self.global_decision_history: dict = json.load(f)
             # todo: sanity check wins aren't more than times chosen
 
-    def decide(self, decision_name, options) -> str:
+    def decide(self, decision_name, options) -> (str, float):
         """
         Makes a decision between choices, taking into account match history.
 
@@ -33,10 +33,9 @@ class Decider:
         TODO: BUG - Don't consider historical options that aren't listed
         """
         # Retrieve percentage win for each option from
-        p = None
+        chosen_count: list = []
+        won_count: list = []
         if decision_name in self.global_decision_history:
-            chosen_count: list = []
-            won_count: list = []
 
             # Intialize missing values
             for option in options:
@@ -48,12 +47,15 @@ class Decider:
                 won_count.append(decision['won_count'])
                 chosen_count.append(decision['chosen_count'])
 
-            p = self._calc_choice_probabilities(np.array(chosen_count), np.array(won_count))
         else:
             # Intialize missing values
             self.global_decision_history[decision_name] = {}
             for option in options:
                 self.global_decision_history[decision_name][option] = {'chosen_count': 0, 'won_count': 0}
+                won_count.append(0)
+                chosen_count.append(0)
+
+        p = self._calc_choice_probabilities(np.array(chosen_count), np.array(won_count))
 
         choice = np.random.choice(options, p=p)
 
@@ -62,7 +64,7 @@ class Decider:
 
         self.global_decision_history[decision_name][choice]['chosen_count'] += 1
         self._record_match_decision(decision_name, choice)
-        return choice
+        return choice, p[options.index(choice)]
 
     def _record_match_decision(self, decision_name, choice_made):
         if decision_name not in self.match_decision_history:
