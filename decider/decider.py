@@ -49,7 +49,7 @@ class Decider:
         Determines the weighted probabilities for each choice.
         """
         scalar = 0.1
-        win_perc = won_count / chosen_count
+        win_perc = np.divide(won_count, chosen_count, out=np.zeros_like(won_count, dtype=float), where=chosen_count != 0)
 
         # calculate a weight that will make low sample size choices more likely
         probability_weight = 1 - (expit(chosen_count * scalar) - 0.5) * 2
