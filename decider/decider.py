@@ -1,4 +1,5 @@
 import json
+import os
 
 import numpy as np
 from scipy.special import expit
@@ -10,11 +11,16 @@ class Decider:
     # Number of times option was chosen.
     # Number of times option ended with win.
 
-    def __init__(self, file='./data/decider.json', rounding_precision: int = 4):
+    def __init__(self, file='./data/decision_cache.json', create_file_on_missing=True, rounding_precision: int = 4):
         self.global_decision_history: dict = {}
         self.match_decision_history: dict = {}
         self.file = file
         self.rounding_precision = rounding_precision
+
+        if create_file_on_missing and not os.path.isfile(file):
+            with open(file, 'w') as f:
+                json.dump(self.global_decision_history, f)
+
         with open(file) as f:
             self.global_decision_history: dict = json.load(f)
             # todo: sanity check wins aren't more than times chosen
