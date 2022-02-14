@@ -47,6 +47,7 @@ class Chance(KnowledgeBot):
             build = random.choice(self.AVAILABLE_STRATS[self.race])
             self.random_build_used = True
 
+        # Useful for debugging specific strats.
         if self._force_strat is not None:
             build = self._force_strat
 
