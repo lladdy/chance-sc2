@@ -4,17 +4,18 @@ import numpy as np
 from scipy.special import expit
 
 
-
 class Decider:
     # Store:
     # Number of times decision_name was made
     # Number of times option was chosen.
     # Number of times option ended with win.
 
-    def __init__(self, load_file='./data/decider.json'):
-        self.decisions: dict = {}
-        with open(load_file) as f:
-            self.decisions: dict = json.load(f)
+    def __init__(self, file='./data/decider.json'):
+        self.global_decision_history: dict = {}
+        self.match_decision_history: dict = {}
+        self.file = file
+        with open(file) as f:
+            self.global_decision_history: dict = json.load(f)
             # todo: sanity check wins aren't more than times chosen
 
     def decide(self, decision_name, options) -> str:
@@ -23,25 +24,68 @@ class Decider:
         """
         # Retrieve percentage win for each option from
         p = None
-        if decision_name in self.decisions:
+        if decision_name in self.global_decision_history:
             chosen_count: list = []
             won_count: list = []
-            for decision in self.decisions:
+
+            # Intialize missing values
+            for option in options:
+                if option not in self.global_decision_history[decision_name]:
+                    self.global_decision_history[decision_name][option] = {'chosen_count': 0, 'won_count': 0}
+
+            # Prepare data for call to probabilities calc
+            for _, decision in self.global_decision_history[decision_name].items():
                 won_count.append(decision['won_count'])
                 chosen_count.append(decision['chosen_count'])
 
             p = self._calc_choice_probabilities(np.array(chosen_count), np.array(won_count))
         else:
-            self.decisions[decision_name] = {}
+            # Intialize missing values
+            self.global_decision_history[decision_name] = {}
+            for option in options:
+                self.global_decision_history[decision_name][option] = {'chosen_count': 0, 'won_count': 0}
 
         choice = np.random.choice(options, p=p)
-        self.decisions[choice]['chosen_count'] += 1
+
+        if choice not in self.global_decision_history[decision_name]:
+            self.global_decision_history[decision_name][choice] = {'chosen_count': 0, 'won_count': 0}
+
+        self.global_decision_history[decision_name][choice]['chosen_count'] += 1
+        self._record_match_decision(decision_name, choice)
         return choice
 
-    def report_win_loss(self, win: bool):
+    def _record_match_decision(self, decision_name, choice_made):
+        if decision_name not in self.match_decision_history:
+            self.match_decision_history[decision_name] = []
+
+        if choice_made not in self.match_decision_history[decision_name]:
+            self.match_decision_history[decision_name].append(choice_made)
+
+    def register_result(self, win: bool, save_to_file=True):
         """
         Registers the outcome of the current match.
         """
+
+        # todo: register win against decisions made
+        if win:
+            for decision_name in self.match_decision_history:
+                for choice_made in self.match_decision_history[decision_name]:
+                    self.global_decision_history[decision_name][choice_made]['won_count'] += 1
+
+        if save_to_file:
+            self._save_state_to_file()
+
+    def _save_state_to_file(self, file_override: str=None):
+        """
+        Saves the current state of the decider to file.
+        """
+
+        file_to_use = self.file
+        if file_override is not None:
+            file_to_use = file_override
+
+        with open(file_to_use, 'w') as f:
+            json.dump(self.global_decision_history, f)
 
     @staticmethod
     def _calc_choice_probabilities(chosen_count: np.array, won_count: np.array) -> np.array:
@@ -74,7 +118,3 @@ class Decider:
         # print(f'Scaled Prob: {scaled_probs}')
         # print(f'Prob Sum: {prob_check_sum}')
         return scaled_probs
-
-
-dec = Decider()
-dec.decide()
