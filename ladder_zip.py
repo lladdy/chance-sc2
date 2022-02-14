@@ -30,7 +30,7 @@ ignored = [
 ]
 
 ladder_zip = LadderZip(
-    "Chance", "Random", [("chance", None), ("run.py", None)], common
+    "Chance", "Random", [("chance", None), ("decider", None), ("run.py", None)], common
 )
 
 
