@@ -10,10 +10,11 @@ class Decider:
     # Number of times option was chosen.
     # Number of times option ended with win.
 
-    def __init__(self, file='./data/decider.json'):
+    def __init__(self, file='./data/decider.json', rounding_precision: int = 4):
         self.global_decision_history: dict = {}
         self.match_decision_history: dict = {}
         self.file = file
+        self.rounding_precision = rounding_precision
         with open(file) as f:
             self.global_decision_history: dict = json.load(f)
             # todo: sanity check wins aren't more than times chosen
@@ -75,7 +76,7 @@ class Decider:
         if save_to_file:
             self._save_state_to_file()
 
-    def _save_state_to_file(self, file_override: str=None):
+    def _save_state_to_file(self, file_override: str = None):
         """
         Saves the current state of the decider to file.
         """
@@ -87,13 +88,13 @@ class Decider:
         with open(file_to_use, 'w') as f:
             json.dump(self.global_decision_history, f)
 
-    @staticmethod
-    def _calc_choice_probabilities(chosen_count: np.array, won_count: np.array) -> np.array:
+    def _calc_choice_probabilities(self, chosen_count: np.array, won_count: np.array) -> np.array:
         """
         Determines the weighted probabilities for each choice.
         """
         scalar = 0.1
-        win_perc = np.divide(won_count, chosen_count, out=np.zeros_like(won_count, dtype=float), where=chosen_count != 0)
+        win_perc = np.divide(won_count, chosen_count, out=np.zeros_like(won_count, dtype=float),
+                             where=chosen_count != 0)
 
         # calculate a weight that will make low sample size choices more likely
         probability_weight = 1 - (expit(chosen_count * scalar) - 0.5) * 2
@@ -104,6 +105,10 @@ class Decider:
         # Scale probabilities back down so they sum to 1.0 again.
         prob_sum = np.sum(weighted_probabilities)
         scaled_probs = weighted_probabilities / prob_sum
+
+        # Avoid rounding errors by taking the rounding error difference
+        # scaled_probs = scaled_probs / scaled_probs.sum(axis=0, keepdims=1)
+        scaled_probs = self._round_probabilities_sum(scaled_probs)
 
         # Sanity check in case of bug
         prob_check_sum = np.sum(scaled_probs)
@@ -116,5 +121,24 @@ class Decider:
         # print(f'Actual Prob: {weighted_probabilities}')
         # print(f'Prob Sum: {prob_sum}')
         # print(f'Scaled Prob: {scaled_probs}')
-        # print(f'Prob Sum: {prob_check_sum}')
+        # print(f'Prob Check Sum: {prob_check_sum}')
+
         return scaled_probs
+
+    def _round_probabilities_sum(self, probabilities: np.array) -> np.array:
+        probabilities = probabilities.round(
+            self.rounding_precision)  # we don't really care about super accurate probabilities
+        round_amount = np.sum(probabilities) - 1.0
+
+        # print(f'round_amount: {round_amount}')
+        # print(f'probabilities: {probabilities}')
+
+        rounding_done = False
+        for idx, probability in enumerate(probabilities):
+            if not rounding_done:
+                if probability >= round_amount:
+                    probabilities[idx] -= round_amount
+                    rounding_done = True
+
+        # print(f'probabilities after rounding: {probabilities}')
+        return probabilities
