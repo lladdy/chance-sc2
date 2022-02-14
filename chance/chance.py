@@ -13,7 +13,7 @@ from chance.strats import Strat
 from chance.util import get_strats_from_module
 from config import get_version
 from decider import Decider
-from sc2.data import Race
+from sc2.data import Race, Result
 from sharpy.knowledges import KnowledgeBot
 from sharpy.plans import BuildOrder
 
@@ -51,6 +51,10 @@ class Chance(KnowledgeBot):
         await self.chat_send(f'Tag: {build}')
         await self.chat_send(f'P: {probability}')
         return await self._get_strat(build).create_plan()
+
+    async def on_end(self, game_result: Result):
+        self.decider.register_result(game_result==Result.Victory)
+        await super().on_end(game_result)
 
     def _get_strat(self, strat_class: str) -> Strat:
         # constructs the class based on the classes name as a string
