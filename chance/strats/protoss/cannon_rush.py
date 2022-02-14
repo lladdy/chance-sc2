@@ -1,6 +1,7 @@
 from math import floor
 from typing import List, Optional
 
+from chance.strats import Strat
 from sc2.data import Race
 from sc2.ids.unit_typeid import UnitTypeId
 from sc2.ids.upgrade_id import UpgradeId
@@ -189,24 +190,24 @@ class ProxyCannoneer(ActBase):
         return worker
 
 
-class CannonRush(KnowledgeBot):
-    def __init__(self, build_name: str = "default"):
-        super().__init__("Sharp Cannon")
-        self.build_name = build_name
+class CannonRush(Strat):
+    # def __init__(self, build_name: str = "default"):
+    #     super().__init__("Sharp Cannon")
+    #     self.build_name = build_name
 
-    def configure_managers(self) -> Optional[List[ManagerBase]]:
-        self.roles.set_tag_each_iteration = True
-        return super().configure_managers()
+    # def configure_managers(self) -> Optional[List[ManagerBase]]:
+    #     self._bot.roles.set_tag_each_iteration = True
+    #     return super()._bot.configure_managers()
 
     async def create_plan(self) -> BuildOrder:
-        if self.build_name == "default":
-            rnd = select_build_index(self.knowledge, "build.cannonrush", 0, 2)
-        else:
-            rnd = int(self.build_name)
+        # if self.build_name == "default":
+        rnd = select_build_index(self._bot.knowledge, "build.cannonrush", 0, 2)
+        # else:
+        #     rnd = int(self.build_name)
 
-        self.building_solver.wall_type = WallType.NoWall
+        self._bot.building_solver.wall_type = WallType.NoWall
         rush_killed = RequireCustom(
-            lambda k: self.lost_units_manager.own_lost_type(UnitTypeId.PROBE) >= 3 or self.time > 4 * 60
+            lambda k: self._bot.lost_units_manager.own_lost_type(UnitTypeId.PROBE) >= 3 or self._bot.time > 4 * 60
         )
 
         if rnd == 2:
@@ -268,9 +269,9 @@ class CannonRush(KnowledgeBot):
         )
 
     def cannon_contain(self) -> ActBase:
-        self.knowledge.print(f"Cannon contain", "Build")
-        enemy_main = self.zone_manager.expansion_zones[-1]
-        natural = self.zone_manager.expansion_zones[-2]
+        self._bot.knowledge.print(f"Cannon contain", "Build")
+        enemy_main = self._bot.zone_manager.expansion_zones[-1]
+        natural = self._bot.zone_manager.expansion_zones[-2]
         enemy_ramp = enemy_main.ramp
 
         return Step(
@@ -358,7 +359,7 @@ class CannonRush(KnowledgeBot):
         )
 
     def cannon_rush(self) -> ActBase:
-        self.knowledge.print(f"Cannon rush", "Build")
+        self._bot.knowledge.print(f"Cannon rush", "Build")
         return BuildOrder(
             [
                 [GridBuilding(UnitTypeId.PYLON, 1), GridBuilding(UnitTypeId.FORGE, 1, priority=True)],
@@ -374,8 +375,8 @@ class CannonRush(KnowledgeBot):
         )
 
     def cannon_expand(self) -> ActBase:
-        self.knowledge.print(f"Cannon expand", "Build")
-        natural = self.zone_manager.expansion_zones[-2]
+        self._bot.knowledge.print(f"Cannon expand", "Build")
+        natural = self._bot.zone_manager.expansion_zones[-2]
         pylon_pos: Point2 = natural.behind_mineral_position_center
 
         return BuildOrder(
@@ -403,9 +404,3 @@ class CannonRush(KnowledgeBot):
                 ],
             ]
         )
-
-
-class LadderBot(CannonRush):
-    @property
-    def my_race(self):
-        return Race.Protoss
