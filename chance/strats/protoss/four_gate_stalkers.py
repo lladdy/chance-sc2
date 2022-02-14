@@ -5,7 +5,8 @@ from sharpy.plans import BuildOrder, Step, SequentialList, StepBuildGas
 from sharpy.plans.acts import ActUnit, GridBuilding, Tech
 from sharpy.plans.acts.protoss import AutoPylon, RestorePower, ChronoUnit, ProtossUnit
 from sharpy.plans.require import UnitReady
-from sharpy.plans.tactics import PlanZoneAttack, PlanZoneDefense, PlanZoneGather, PlanFinishEnemy, DistributeWorkers
+from sharpy.plans.tactics import PlanZoneAttack, PlanZoneDefense, PlanZoneGather, PlanFinishEnemy, DistributeWorkers, \
+    SpeedMining
 
 
 class TheAttack(PlanZoneAttack):
@@ -51,6 +52,7 @@ class FourGateStalkers(Strat):
                     PlanZoneDefense(),
                     RestorePower(),
                     DistributeWorkers(),
+                    Step(None, SpeedMining(), lambda ai: ai.client.game_step > 5),
                     PlanZoneGather(),
                     Step(UnitReady(UnitTypeId.GATEWAY, 4), attack),
                     PlanFinishEnemy(),

@@ -179,6 +179,7 @@ class TerranSilverBio(Strat):
             WeakDefense(),
             CallMule(0),
             DistributeWorkers(),
+            Step(None, SpeedMining(), lambda ai: ai.client.game_step > 5),
             Repair(),
             ContinueBuilding(),
             PlanZoneGatherTerran(),

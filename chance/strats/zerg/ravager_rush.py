@@ -45,6 +45,7 @@ class RavagerRush(Strat):
             SequentialList(
                 [
                     DistributeWorkers(4),
+                    Step(None, SpeedMining(), lambda ai: ai.client.game_step > 5),
                     PlanZoneDefense(),
                     AutoOverLord(),
                     InjectLarva(),

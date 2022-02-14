@@ -51,6 +51,7 @@ class LingRush(Strat):
             in_case_of_air,
             SequentialList(
                 [
+                    Step(None, SpeedMining(), lambda ai: ai.client.game_step > 5),
                     PlanZoneDefense(),
                     AutoOverLord(),
                     InjectLarva(),

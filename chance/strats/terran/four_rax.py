@@ -3,7 +3,7 @@ from sc2.ids.unit_typeid import UnitTypeId
 from sc2.units import Units
 from sharpy.general.extended_power import ExtendedPower
 from sharpy.managers.core.roles import UnitTask
-from sharpy.plans import BuildOrder, SequentialList
+from sharpy.plans import BuildOrder, SequentialList, Step
 from sharpy.plans.acts import *
 from sharpy.plans.acts.terran import AutoDepot
 from sharpy.plans.tactics import *
@@ -44,6 +44,7 @@ class FourRax(Strat):
                     LowerDepots(),
                     PlanZoneDefense(),
                     DistributeWorkers(),
+                    Step(None, SpeedMining(), lambda ai: ai.client.game_step > 5),
                     ManTheBunkers(),
                     Repair(),
                     ContinueBuilding(),
