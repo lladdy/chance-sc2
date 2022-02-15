@@ -1,6 +1,6 @@
 from .banshees import Banshees
 from .battle_cruisers import BattleCruisers
-from .bio import Bio
+# from .bio import Bio
 from .five_rax import FiveRax
 from .four_rax import FourRax
 from .marine_rush import MarineRush
