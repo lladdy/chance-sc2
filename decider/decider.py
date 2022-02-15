@@ -29,7 +29,9 @@ class Decider:
         """
         Makes a decision between choices, taking into account match history.
 
-        TODO: allow for decision scopes where the called can register things like their opponent/race/etc in the decision
+        TODO: allow for decision scopes where the caller can register things like their opponent/race/etc in the decision
+        TODO: have decisions with a similar (but not the same) set of scopes influence other decisions.
+        TODO: e.g.
         TODO: BUG - Don't consider historical options that aren't listed
         """
         # Retrieve percentage win for each option from
