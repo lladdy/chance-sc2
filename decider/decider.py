@@ -10,6 +10,11 @@ def floor(array: np.array, precision=0):
     return np.true_divide(np.floor(array * 10 ** precision), 10 ** precision)
 
 
+def fix_p(p):
+    if p.sum() != 1.0:
+        p = p * (1. / p.sum())
+    return p
+
 
 class Decider:
     # Store:
@@ -64,8 +69,7 @@ class Decider:
                 chosen_count.append(0)
 
         p = self._calc_choice_probabilities(np.array(chosen_count), np.array(won_count))
-
-        choice = np.random.choice(options, p=p)
+        choice = np.random.choice(options, p=fix_p(p))
 
         if choice not in self.global_decision_history[decision_name]:
             self.global_decision_history[decision_name][choice] = {'chosen_count': 0, 'won_count': 0}
@@ -131,6 +135,7 @@ class Decider:
 
         # Sanity check in case of bug
         prob_check_sum = np.sum(scaled_probs)
+        # assert prob_check_sum == 1.0, f'Is there a bug? prob_check_sum was {prob_check_sum}'
 
         # print(f'Samples: {samples}')
         # print(f'Wins: {wins}')
@@ -145,32 +150,7 @@ class Decider:
         return scaled_probs
 
     def _round_probabilities_sum(self, probabilities: np.array) -> np.array:
-        # https://stackoverflow.com/questions/13483430/how-to-make-rounded-percentages-add-up-to-100
-
-        floor_probs = floor(probabilities, self.rounding_precision)  # we don't really care about super accurate probabilities
-
-        np.set_printoptions(precision=10)
-        print(floor_probs)
-
-        error_amount = 0
-        test = np.array([0.0714, 0.0714, 0.0714, 0.0714, 0.0714, 0.0714, 0.0714, 0.0714, 0.0714, 0.0714, 0.0714, 0.0714, 0.0714, 0.0714], dtype=np.float)
-
-        for prob in test:
-            error_amount += prob
-        error_amount = np.subtract(float(1), error_amount)
-        print(error_amount)
-
-        # print(f'round_amount: {round_amount}')
-        # print(f'probabilities: {probabilities}')
-
-        rounding_done = False
-        for idx, probability in enumerate(floor_probs):
-            if not rounding_done:
-                if probability >= error_amount:
-                    floor_probs[idx] -= error_amount
-                    rounding_done = True
-
-        # print(f'probabilities after rounding: {probabilities}')
-        return floor_probs
-
-
+        probabilities = floor(probabilities, self.rounding_precision)
+        round_amount = 1.0 - np.sum(probabilities)
+        probabilities[0] += round_amount  # chuck it on the first one
+        return probabilities

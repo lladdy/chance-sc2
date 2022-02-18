@@ -2,12 +2,15 @@ from typing import List
 
 from decider import Decider
 
-# dec = Decider()
-# dec.decide('build', ['FourRax', "FiveRax"])
-# dec.register_result(True, save_to_file=False)
+
+def test_standard_usage():
+    dec = Decider()
+    dec.decide('build', ['FourRax', "FiveRax"])
+    dec.register_result(True, save_to_file=False)
 
 
-def ladder_crash_scenario(filename: str, scopes: str, options: List[str], result: bool=True, save_to_file: bool=False):
+def ladder_crash_scenario(filename: str, scopes: str, options: List[str], result: bool = True,
+                          save_to_file: bool = False):
     dec = Decider(file=filename)
     dec.decide(scopes, options)
     dec.register_result(result, save_to_file=save_to_file)
@@ -18,4 +21,6 @@ def ladder_crash_scenario_1():
                           "build",
                           ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"])
 
+
+test_standard_usage()
 ladder_crash_scenario_1()
