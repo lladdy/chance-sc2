@@ -134,18 +134,17 @@ class Decider:
         scaled_probs = self._round_probabilities_sum(scaled_probs)
 
         # Sanity check in case of bug
-        prob_check_sum = np.sum(scaled_probs)
+        # prob_check_sum = np.sum(scaled_probs)
         # assert prob_check_sum == 1.0, f'Is there a bug? prob_check_sum was {prob_check_sum}'
 
         # print(f'Samples: {samples}')
         # print(f'Wins: {wins}')
-        print(f'Win %: {win_perc}')
-        print(f'Prob Inv: {probability_weight}')
-        print(f'Actual Prob: {weighted_probabilities}')
-        print(f'Prob Sum: {prob_sum}')
-        print(f'Scaled Prob: {scaled_probs}')
-        print(f'Prob Check Sum: {prob_check_sum}')
-        assert prob_check_sum == 1.0, f'Is there a bug? prob_check_sum was {prob_check_sum}'
+        # print(f'Win %: {win_perc}')
+        # print(f'Prob Inv: {probability_weight}')
+        # print(f'Actual Prob: {weighted_probabilities}')
+        # print(f'Prob Sum: {prob_sum}')
+        # print(f'Scaled Prob: {scaled_probs}')
+        # print(f'Prob Check Sum: {prob_check_sum}')
 
         return scaled_probs
 
