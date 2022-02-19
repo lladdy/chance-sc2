@@ -1,0 +1,60 @@
+{
+    "build": {
+        "1": {
+            "chosen_count": 0,
+            "won_count": 0
+        },
+        "2": {
+            "chosen_count": 0,
+            "won_count": 0
+        },
+        "3": {
+            "chosen_count": 0,
+            "won_count": 0
+        },
+        "4": {
+            "chosen_count": 0,
+            "won_count": 0
+        },
+        "5": {
+            "chosen_count": 0,
+            "won_count": 0
+        },
+        "6": {
+            "chosen_count": 0,
+            "won_count": 0
+        },
+        "7": {
+            "chosen_count": 0,
+            "won_count": 0
+        },
+        "8": {
+            "chosen_count": 0,
+            "won_count": 0
+        },
+        "9": {
+            "chosen_count": 1,
+            "won_count": 0
+        },
+        "10": {
+            "chosen_count": 0,
+            "won_count": 0
+        },
+        "11": {
+            "chosen_count": 0,
+            "won_count": 0
+        },
+        "12": {
+            "chosen_count": 0,
+            "won_count": 0
+        },
+        "13": {
+            "chosen_count": 0,
+            "won_count": 0
+        },
+        "14": {
+            "chosen_count": 0,
+            "won_count": 0
+        }
+    }
+}

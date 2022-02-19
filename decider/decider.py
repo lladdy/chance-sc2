@@ -42,8 +42,6 @@ class Decider:
 
         TODO: allow for decision scopes where the caller can register things like their opponent/race/etc in the decision
         TODO: have decisions with a similar (but not the same) set of scopes influence other decisions.
-        TODO: e.g.
-        TODO: BUG - Don't consider historical options that aren't listed
         """
         # Retrieve percentage win for each option from
         chosen_count: list = []
@@ -56,9 +54,11 @@ class Decider:
                     self.global_decision_history[decision_name][option] = {'chosen_count': 0, 'won_count': 0}
 
             # Prepare data for call to probabilities calc
-            for _, decision in self.global_decision_history[decision_name].items():
-                won_count.append(decision['won_count'])
-                chosen_count.append(decision['chosen_count'])
+            for key, decision in self.global_decision_history[decision_name].items():
+                # # omit missing historical options
+                if key in options:
+                    won_count.append(decision['won_count'])
+                    chosen_count.append(decision['chosen_count'])
 
         else:
             # Intialize missing values
@@ -89,8 +89,6 @@ class Decider:
         """
         Registers the outcome of the current match.
         """
-
-        # todo: register win against decisions made
         if win:
             for decision_name in self.match_decision_history:
                 for choice_made in self.match_decision_history[decision_name]:
