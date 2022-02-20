@@ -22,7 +22,7 @@ class QueensSc2Manager(ManagerBase):
         await super().start(knowledge)
 
         if self.use_sc2_map_analyzer:
-            from SC2MapAnalysis.MapAnalyzer import MapData
+            from MapAnalyzer import MapData
             self.map_data = MapData(self.ai)
         else:
             self.map_data = None
