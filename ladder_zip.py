@@ -1,12 +1,11 @@
 # Script for creating Ladder Manager compatible Zip archives.
 
-import os
 import argparse
+import os
 
-
+from bot_loader import LadderZip
 # import sub_module  # Important, do not remove!
 from version import update_version_txt
-from bot_loader import LadderZip
 
 root_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -30,7 +29,8 @@ ignored = [
 ]
 
 ladder_zip = LadderZip(
-    "Chance", "Random", [("chance", None), ("decider", None), ("queens-sc2", None), ("run.py", None)], common
+    "Chance", "Random", [("chance", None), ("decider", None), ("queens-sc2", None), ("run.py", None),
+                         (os.path.join("SC2MapAnalysis", "MapAnalyzer"), "MapAnalyzer"), ], common
 )
 
 
