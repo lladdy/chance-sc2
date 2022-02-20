@@ -113,8 +113,8 @@ class Decider:
         """
         Determines the weighted probabilities for each choice.
         """
-        win_perc = np.divide(won_count, chosen_count, out=np.zeros_like(won_count, dtype=float),
-                             where=chosen_count != 0)
+        win_perc = np.divide(chosen_count, won_count, out=np.zeros_like(chosen_count, dtype=float),
+                             where=won_count != 0)
 
         """
         mod: The higher this value, quicker the weight fall off as chosen_count climbs
