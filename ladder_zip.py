@@ -29,8 +29,13 @@ ignored = [
 ]
 
 ladder_zip = LadderZip(
-    "Chance", "Random", [("chance", None), ("decider", None), ("queens-sc2", None), ("run.py", None),
-                         (os.path.join("SC2MapAnalysis", "MapAnalyzer"), "MapAnalyzer"), ], common
+    "Chance", "Random", [
+        ("chance", None),
+        ("decider", None),
+        (os.path.join("queens-sc2", "queens_sc2"), "queens_sc2"),
+        ("run.py", None),
+        (os.path.join("SC2MapAnalysis", "MapAnalyzer"), "MapAnalyzer"),
+    ], common
 )
 
 
