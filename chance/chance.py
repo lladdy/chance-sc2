@@ -3,7 +3,6 @@ import random
 # STRAT IMPORTS
 from typing import Optional, List, Callable
 
-from chance.strats.random import *
 # noinspection PyUnresolvedReferences
 from chance.strats.terran import *
 # noinspection PyUnresolvedReferences
@@ -21,15 +20,10 @@ from sharpy.plans import BuildOrder
 
 
 class Chance(KnowledgeBot):
-    RANDOM_STRATS = get_strats_from_module('chance.strats.random')
-    TERAN_STRATS = get_strats_from_module('chance.strats.terran') + RANDOM_STRATS
-    ZERG_STRATS = get_strats_from_module('chance.strats.zerg') + RANDOM_STRATS
-    PROTOSS_STRATS = get_strats_from_module('chance.strats.protoss') + RANDOM_STRATS
-
     AVAILABLE_STRATS = {
-        Race.Terran: TERAN_STRATS,
-        Race.Zerg: ZERG_STRATS,
-        Race.Protoss: PROTOSS_STRATS,
+        Race.Terran: get_strats_from_module('chance.strats.terran'),
+        Race.Zerg: get_strats_from_module('chance.strats.zerg'),
+        Race.Protoss: get_strats_from_module('chance.strats.protoss'),
     }
 
     def __init__(self, strat_name=None):

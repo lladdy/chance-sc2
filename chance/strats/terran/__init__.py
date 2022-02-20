@@ -8,4 +8,5 @@ from .one_base_turtle import OneBaseTurtle
 from .planetary_fortress_rush import PlanetaryFortressRush
 from .rusty import Rusty
 from .terran_safe_tvt import TerranSafeTvT
+from .terran_worker_rush import TerranWorkerRush
 from .two_base_tanks import TwoBaseTanks
