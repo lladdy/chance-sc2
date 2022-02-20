@@ -113,12 +113,15 @@ class Decider:
         """
         Determines the weighted probabilities for each choice.
         """
-        scalar = 0.1
         win_perc = np.divide(chosen_count, won_count, out=np.zeros_like(won_count, dtype=float),
                              where=chosen_count != 0)
 
+        """
+        mod: The higher this value, quicker the weight fall off as chosen_count climbs
+        """
+        mod = 1.0
         # calculate a weight that will make low sample size choices more likely
-        probability_weight = 1 - (expit(chosen_count * scalar) - 0.5) * 2
+        probability_weight = 1 - (expit(chosen_count * mod) - 0.5) * 2
 
         # Apply that weight to each choice's win percentage
         weighted_probabilities = win_perc + probability_weight
@@ -138,9 +141,12 @@ class Decider:
         # print(f'Samples: {samples}')
         # print(f'Wins: {wins}')
         # print(f'Win %: {win_perc}')
+        # print(f'probability_weight: {probability_weight}')
         # print(f'Prob Inv: {probability_weight}')
         # print(f'Actual Prob: {weighted_probabilities}')
         # print(f'Prob Sum: {prob_sum}')
+        # print(f'chosen_count: {chosen_count}')
+        # print(f'won_count Prob: {won_count}')
         # print(f'Scaled Prob: {scaled_probs}')
         # print(f'Prob Check Sum: {prob_check_sum}')
 
