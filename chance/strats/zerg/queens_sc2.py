@@ -114,11 +114,8 @@ class QueensSc2(Strat):
                 },
             }
 
-        build_drones = lambda ai: self._bot.can_afford(UnitTypeId.DRONE) and self._bot.larva.amount > 0 \
-                                  and self._bot.workers.amount < self._bot.townhalls.amount * 16 \
-                                  and self._bot.workers.amount < 48  # max 3 base saturation
-        build_queens = lambda ai: self._bot.can_afford(UnitTypeId.QUEEN) and self._bot.townhalls.amount > 0 \
-                                  and self._bot.townhalls.ready
+        build_drones = lambda ai: self._bot.workers.amount >= self._bot.townhalls.amount * 16 \
+                                  or self._bot.workers.amount >= 16 * 3  # max 3 base saturation
         return BuildOrder(
             SetQueensSc2Policy(early_game_queen_policy, policy_name="early_game_queen_policy"),
             ActUnit(UnitTypeId.DRONE, UnitTypeId.LARVA, 13),
@@ -134,19 +131,28 @@ class QueensSc2(Strat):
                 DistributeWorkers(max_gas=0),
                 Step(None, SpeedMining(), lambda ai: ai.client.game_step > 5),
                 AutoOverLord(),
-                Step(None, ActUnit(UnitTypeId.DRONE, UnitTypeId.LARVA), skip_until=build_drones),
-                Step(None, ActUnit(UnitTypeId.QUEEN, UnitTypeId.HATCHERY), skip_until=build_queens),
-                Expand(3),
-                ActBuilding(UnitTypeId.HATCHERY, 4),
-                Expand(4),
-                ActBuilding(UnitTypeId.HATCHERY, 5),
-                Expand(5),
-                ActBuilding(UnitTypeId.HATCHERY, 6),
-                Expand(6),
-                ActBuilding(UnitTypeId.HATCHERY, 7),
-                Expand(7),
-                ActBuilding(UnitTypeId.HATCHERY, 8),
-                Expand(8),
+                BuildOrder(
+                    Step(None, ActUnit(UnitTypeId.DRONE, UnitTypeId.LARVA), skip=build_drones),
+                    Step(None, ActUnit(UnitTypeId.QUEEN, UnitTypeId.HATCHERY)),
+                    Expand(3),
+                    ActBuilding(UnitTypeId.HATCHERY, 4),
+                    ActBuilding(UnitTypeId.HATCHERY, 5),
+                    ActBuilding(UnitTypeId.HATCHERY, 6),
+                    Expand(4),
+                    ActBuilding(UnitTypeId.HATCHERY, 8),
+                    Expand(5),
+                    ActBuilding(UnitTypeId.HATCHERY, 10),
+                    Expand(6),
+                    ActBuilding(UnitTypeId.HATCHERY, 12),
+                    Expand(7),
+                    ActBuilding(UnitTypeId.HATCHERY, 14),
+                    Expand(8),
+                    ActBuilding(UnitTypeId.HATCHERY, 16),
+                    Expand(9),
+                    ActBuilding(UnitTypeId.HATCHERY, 18),
+                    Expand(10),
+                    ActBuilding(UnitTypeId.HATCHERY, 20),
+                )
             ),
         )
 
