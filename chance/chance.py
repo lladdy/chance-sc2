@@ -1,6 +1,8 @@
 import random
 
 # STRAT IMPORTS
+from typing import Optional, List, Callable
+
 from chance.strats.random import *
 # noinspection PyUnresolvedReferences
 from chance.strats.terran import *
@@ -40,25 +42,41 @@ class Chance(KnowledgeBot):
         self.random_build_used = False
         self.decider = Decider()
 
-    async def create_plan(self) -> BuildOrder:
-        build, probability = self.decider.decide(f'build_{self.opponent_id}_{self.race}', self.AVAILABLE_STRATS[self.race])
-
+    async def on_start(self):
         # Useful for debugging specific strats.
         if self._force_strat is not None:
-            build = self._force_strat
+            self.build = self._force_strat
+            self.probability = 1.0
+        else:
+            # do this here because we need to know the build in order to create required managers
+            self.build, self.probability = self.decider.decide(f'build_{self.opponent_id}_{self.race}', self.AVAILABLE_STRATS[self.race])
 
-        self.knowledge.data_manager.set_build(build)
-        await self.chat_send(f'Tag: {build}')
-        await self.chat_send(f'P: {probability}')
-        return await self._get_strat(build).create_plan()
+        await super().on_start()
+
+    async def create_plan(self) -> BuildOrder:
+        self.knowledge.data_manager.set_build(self.build)
+        await self.chat_send(f'Tag: {self.build}')
+        await self.chat_send(f'P: {self.probability}')
+        return await self._get_strat(self.build).create_plan()
+
+    def configure_managers(self) -> Optional[List["ManagerBase"]]:
+        return self._get_strat_class(self.build).configure_managers(self)
 
     async def on_end(self, game_result: Result):
         self.decider.register_result(game_result==Result.Victory)
         await super().on_end(game_result)
 
     def _get_strat(self, strat_class: str) -> Strat:
-        # constructs the class based on the classes name as a string
-        return globals()[strat_class](self)
+        """
+        Constructs the class based on the classes name as a string
+        """
+        return self._get_strat_class(strat_class)(self)
+
+    def _get_strat_class(self, strat_class_name: str) -> type(Strat):
+        """
+        Gets the class based on the classes name as a string
+        """
+        return globals()[strat_class_name]
 
     def _create_start_msg(self) -> str:
         msg: str = ""
@@ -68,6 +86,6 @@ class Chance(KnowledgeBot):
 
         version = get_version()
         if len(version) >= 2:
-            msg += f" {version[0]} {version[1]} {int(self.random_build_used)}"
+            msg += f" {version[0]} {version[1]}"
 
         return msg
