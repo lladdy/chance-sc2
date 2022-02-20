@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from typing import Dict
 
 from queens_sc2.queens import Queens
@@ -27,3 +28,6 @@ class QueensSc2Manager(ManagerBase):
 
     async def post_update(self):
         pass
+
+    def set_new_policy(self, queen_policy: Dict):
+        self.queens.set_new_policy(queen_policy)
