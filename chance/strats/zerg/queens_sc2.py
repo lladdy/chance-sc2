@@ -87,34 +87,17 @@ class QueensSc2(Strat):
                 AutoOverLord(),
                 Step(None, ActUnit(UnitTypeId.DRONE, UnitTypeId.LARVA), skip_until=build_drones),
                 Step(None, ActUnit(UnitTypeId.QUEEN, UnitTypeId.HATCHERY), skip_until=build_queens),
-                Step(None, ActBuilding(UnitTypeId.HATCHERY, 3),
-                     skip_until=lambda ai: self._bot.townhalls.amount == 2
-                                           and self._bot.can_afford(UnitTypeId.HATCHERY)
-                                           and self._bot.workers.amount > 0),
-                Step(None, Expand(3), skip_until=lambda ai: self._bot.townhalls.amount == 2
-                                                            and self._bot.can_afford(UnitTypeId.HATCHERY)
-                                                            and self._bot.workers.amount > 0),
-                Step(None, Expand(4), skip_until=lambda ai: self._bot.townhalls.amount == 3
-                                                            and self._bot.can_afford(UnitTypeId.HATCHERY)
-                                                            and self._bot.workers.amount > 0),
-                Step(None, Expand(5), skip_until=lambda ai: self._bot.townhalls.amount == 4
-                                                            and self._bot.can_afford(UnitTypeId.HATCHERY)
-                                                            and self._bot.workers.amount > 0),
-                Step(None, Expand(6), skip_until=lambda ai: self._bot.townhalls.amount == 5
-                                                            and self._bot.can_afford(UnitTypeId.HATCHERY)
-                                                            and self._bot.workers.amount > 0),
-                Step(None, Expand(7), skip_until=lambda ai: self._bot.townhalls.amount == 6
-                                                            and self._bot.can_afford(UnitTypeId.HATCHERY)
-                                                            and self._bot.workers.amount > 0),
-                Step(None, Expand(8), skip_until=lambda ai: self._bot.townhalls.amount == 7
-                                                            and self._bot.can_afford(UnitTypeId.HATCHERY)
-                                                            and self._bot.workers.amount > 0),
-                Step(None, Expand(9), skip_until=lambda ai: self._bot.townhalls.amount == 8
-                                                            and self._bot.can_afford(UnitTypeId.HATCHERY)
-                                                            and self._bot.workers.amount > 0),
-                Step(None, Expand(10), skip_until=lambda ai: self._bot.townhalls.amount == 9
-                                                             and self._bot.can_afford(UnitTypeId.HATCHERY)
-                                                             and self._bot.workers.amount > 0),
+                Expand(3),
+                ActBuilding(UnitTypeId.HATCHERY, 4),
+                Expand(4),
+                ActBuilding(UnitTypeId.HATCHERY, 5),
+                Expand(5),
+                ActBuilding(UnitTypeId.HATCHERY, 6),
+                Expand(6),
+                ActBuilding(UnitTypeId.HATCHERY, 7),
+                Expand(7),
+                ActBuilding(UnitTypeId.HATCHERY, 8),
+                Expand(8),
             ),
         )
 
