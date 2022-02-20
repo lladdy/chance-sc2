@@ -4,3 +4,6 @@
 [submodule "queens-sc2"]
 	path = queens-sc2
 	url = https://github.com/lladdy/queens-sc2.git
+[submodule "SC2MapAnalysis"]
+	path = SC2MapAnalysis
+	url = https://github.com/lladdy/SC2MapAnalysis.git
