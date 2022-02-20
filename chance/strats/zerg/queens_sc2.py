@@ -50,8 +50,8 @@ class QueensSc2(Strat):
                     "attack_condition": lambda: self._bot.enemy_units.filter(
                         lambda u: u.type_id == UnitTypeId.WIDOWMINEBURROWED
                                   and u.distance_to(self._bot.enemy_start_locations[0]) > 50
-                                  and not queens_manager.defence.enemy_air_threats
-                                  and not queens_manager.defence.enemy_ground_threats
+                                  and not queens_manager.queens.defence.enemy_air_threats
+                                  and not queens_manager.queens.defence.enemy_ground_threats
                     )
                                                 or (
                                                     self._bot.structures(UnitTypeId.NYDUSCANAL)
@@ -100,8 +100,8 @@ class QueensSc2(Strat):
                                                 or self._bot.enemy_units.filter(
                         lambda u: u.type_id == UnitTypeId.WIDOWMINEBURROWED
                                   and u.distance_to(self._bot.enemy_start_locations[0]) > 50
-                                  and not queens_manager.defence.enemy_air_threats
-                                  and not queens_manager.defence.enemy_ground_threats
+                                  and not queens_manager.queens.defence.enemy_air_threats
+                                  and not queens_manager.queens.defence.enemy_ground_threats
                     )
                                                 or self._bot.structures(UnitTypeId.NYDUSCANAL),
                     "rally_point": self._bot.zone_manager.own_natural.center_location,
@@ -128,7 +128,8 @@ class QueensSc2(Strat):
             SequentialList(
                 Step(None, SetQueensSc2Policy(mid_game_queen_policy, policy_name="mid_game_queen_policy"),
                      skip_until=lambda ai: ai.time > 480),
-                DistributeWorkers(max_gas=0),
+                Step(None, DistributeWorkers(max_gas=0), skip=lambda ai: ai.time > 480),
+                Step(None, DistributeWorkers(max_gas=0), skip_until=lambda ai: ai.time > 480 and self._bot.knowledge.iteration % 4 == 0),
                 Step(None, SpeedMining(), lambda ai: ai.client.game_step > 5),
                 AutoOverLord(),
                 BuildOrder(
@@ -158,4 +159,4 @@ class QueensSc2(Strat):
 
     @staticmethod
     def configure_managers(self) -> Optional[List[ManagerBase]]:
-        return [QueensSc2Manager()]
+        return [QueensSc2Manager(use_sc2_map_analyzer=True)]
