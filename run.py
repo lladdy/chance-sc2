@@ -44,7 +44,7 @@ if __name__ == '__main__':
         else:
             bot = Bot(race_map[args.ForceRace], Chance(args.ForceStrategy))
 
-        run_game(maps.get("Simple64"), [
+        run_game(maps.get("2000AtmospheresAIE"), [
             bot,
             Computer(Race.Random, Difficulty.VeryHard),
         ], save_replay_as=f'replays/replay.SC2Replay', realtime=False)
