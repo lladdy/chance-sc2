@@ -95,10 +95,9 @@ class RoachBurrow(Strat):
     Dummy bot that rushes to roaches and burrow for an early timing attack.
     """
 
-    @staticmethod
-    def configure_managers(ai: KnowledgeBot) -> Optional[List[ManagerBase]]:
+    def configure_managers(self) -> Optional[List[ManagerBase]]:
         # Set the burrow roach micro
-        ai.combat.default_rules.unit_micros[UnitTypeId.ROACH] = MicroBurrowRoaches()
+        self._bot.combat.default_rules.unit_micros[UnitTypeId.ROACH] = MicroBurrowRoaches()
         return []
 
     async def create_plan(self) -> BuildOrder:

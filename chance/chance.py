@@ -39,22 +39,24 @@ class Chance(KnowledgeBot):
     async def on_start(self):
         # Useful for debugging specific strats.
         if self._force_strat is not None:
-            self.build = self._force_strat
+            self.build_name = self._force_strat
             self.probability = 1.0
         else:
             # do this here because we need to know the build in order to create required managers
-            self.build, self.probability = self.decider.decide(f'build_{self.opponent_id}_{self.race}', self.AVAILABLE_STRATS[self.race])
+            self.build_name, self.probability = self.decider.decide(f'build_{self.opponent_id}_{self.race}', self.AVAILABLE_STRATS[self.race])
 
+        self.strat = self._get_strat(self.build_name)
+        await self.strat.on_start(self)
         await super().on_start()
 
     async def create_plan(self) -> BuildOrder:
-        self.knowledge.data_manager.set_build(self.build)
-        await self.chat_send(f'Tag: {self.build}')
+        self.knowledge.data_manager.set_build(self.build_name)
+        await self.chat_send(f'Tag: {self.build_name}')
         await self.chat_send(f'P: {self.probability}')
-        return await self._get_strat(self.build).create_plan()
+        return await self.strat.create_plan()
 
     def configure_managers(self) -> Optional[List["ManagerBase"]]:
-        return self._get_strat_class(self.build).configure_managers(self)
+        return self.strat.configure_managers()
 
     async def on_end(self, game_result: Result):
         self.decider.register_result(game_result==Result.Victory)
@@ -64,7 +66,7 @@ class Chance(KnowledgeBot):
         """
         Constructs the class based on the classes name as a string
         """
-        return self._get_strat_class(strat_class)(self)
+        return self._get_strat_class(strat_class)()
 
     def _get_strat_class(self, strat_class_name: str) -> type(Strat):
         """

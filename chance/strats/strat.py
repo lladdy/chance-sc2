@@ -12,13 +12,12 @@ class Strat:
     An abstract strat containing generic functionality
     """
 
-    def __init__(self, bot: KnowledgeBot):
+    async def on_start(self, bot: KnowledgeBot):
         self._bot = bot
 
     @abstractmethod
     async def create_plan(self) -> BuildOrder:
         pass
 
-    @staticmethod
     def configure_managers(self) -> Optional[List[ManagerBase]]:
         return []

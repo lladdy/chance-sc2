@@ -202,7 +202,7 @@ class BuildBio(BuildOrder):
 
 
 class Bio(Strat):
-    @staticmethod
+
     def configure_managers(self) -> Optional[List["ManagerBase"]]:
         return [BuildDetector(), ChatManager()]
 

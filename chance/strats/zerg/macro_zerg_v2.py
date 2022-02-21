@@ -65,7 +65,6 @@ class MacroBuild(BuildOrder):
 class MacroZergV2(Strat):
     """Macro Zerg bot that expands like crazy, makes drones and finally transitions to waves of zerglings."""
 
-    @staticmethod
     def configure_managers(self) -> Optional[List[ManagerBase]]:
         self._bot.combat.default_rules.regroup = False
         return None

@@ -157,6 +157,5 @@ class QueensSc2(Strat):
             ),
         )
 
-    @staticmethod
     def configure_managers(self) -> Optional[List[ManagerBase]]:
         return [QueensSc2Manager(use_sc2_map_analyzer=True)]

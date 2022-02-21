@@ -87,7 +87,6 @@ class ProtossWorkerRush(Strat):
         super().__init__(bot)
         self.cleanup = MacroStalkers(bot)
 
-    @staticmethod
     def configure_managers(self) -> Optional[List["ManagerBase"]]:
         return MacroStalkers.configure_managers(self)
 

@@ -87,9 +87,8 @@ class TerranWorkerRush(Strat):
         super().__init__(bot)
         self.cleanup = BattleCruisers(bot)
 
-    @staticmethod
     def configure_managers(self) -> Optional[List["ManagerBase"]]:
-        return BattleCruisers.configure_managers(self)
+        return self.cleanup.configure_managers(self)
 
     async def create_plan(self) -> BuildOrder:
         perform_cleanup = RequireCustom(lambda

@@ -17,7 +17,7 @@ from sharpy.plans.tactics import *
 
 
 class Stalkers4Gate(Strat):
-    @staticmethod
+
     def configure_managers(self) -> Optional[List[ManagerBase]]:
         return [
             MemoryManager(),
