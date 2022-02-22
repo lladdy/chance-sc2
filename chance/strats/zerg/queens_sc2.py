@@ -135,24 +135,8 @@ class QueensSc2(Strat):
                 BuildOrder(
                     Step(None, ActUnit(UnitTypeId.DRONE, UnitTypeId.LARVA), skip=build_drones),
                     Step(None, ActUnit(UnitTypeId.QUEEN, UnitTypeId.HATCHERY)),
-                    Expand(3),
-                    ActBuilding(UnitTypeId.HATCHERY, 4),
-                    ActBuilding(UnitTypeId.HATCHERY, 5),
-                    ActBuilding(UnitTypeId.HATCHERY, 6),
-                    Expand(4),
-                    ActBuilding(UnitTypeId.HATCHERY, 8),
-                    Expand(5),
-                    ActBuilding(UnitTypeId.HATCHERY, 10),
-                    Expand(6),
-                    ActBuilding(UnitTypeId.HATCHERY, 12),
-                    Expand(7),
-                    ActBuilding(UnitTypeId.HATCHERY, 14),
-                    Expand(8),
-                    ActBuilding(UnitTypeId.HATCHERY, 16),
-                    Expand(9),
-                    ActBuilding(UnitTypeId.HATCHERY, 18),
-                    Expand(10),
-                    ActBuilding(UnitTypeId.HATCHERY, 20),
+                    Expand(4),  # 4 mining bases
+                    ActBuilding(UnitTypeId.HATCHERY, 40),  # Macro hatcheries - 20 includes mining bases
                 )
             ),
         )
