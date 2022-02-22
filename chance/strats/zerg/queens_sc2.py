@@ -1,9 +1,8 @@
 from typing import List, Optional
 
-from chance.queens_sc2_acts import SetQueensSc2Policy
-from chance.queens_sc2_manager import QueensSc2Manager
 from chance.strats import Strat
 from queens_sc2.consts import QueenRoles
+from queens_sc2.sharpy import QueensSc2Manager, SetQueensSc2Policy
 from sc2.ids.unit_typeid import UnitTypeId
 from sharpy.managers import ManagerBase
 from sharpy.plans import BuildOrder, SequentialList, Step
