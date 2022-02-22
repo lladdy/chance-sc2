@@ -4,10 +4,12 @@ from chance.strats import Strat
 from queens_sc2.consts import QueenRoles
 from queens_sc2.sharpy import QueensSc2Manager, SetQueensSc2Policy
 from sc2.ids.unit_typeid import UnitTypeId
+from sc2.ids.upgrade_id import UpgradeId
 from sharpy.managers import ManagerBase
 from sharpy.plans import BuildOrder, SequentialList, Step
 from sharpy.plans.acts import *
-from sharpy.plans.acts.zerg import AutoOverLord
+from sharpy.plans.acts.zerg import AutoOverLord, MorphLair, MorphHive
+from sharpy.plans.require import UnitReady, TechReady
 from sharpy.plans.tactics import DistributeWorkers, SpeedMining
 
 
@@ -123,8 +125,19 @@ class QueensSc2(Strat):
                 },
             }
 
-        build_drones = lambda ai: self._bot.workers.amount >= self._bot.townhalls.amount * 16 \
-                                  or self._bot.workers.amount >= 16 * 3  # max 3 base saturation
+        gas_workers = 4
+        build_drones = lambda ai: self._bot.workers.amount >= self._bot.townhalls.amount * 16 + gas_workers \
+                                  or self._bot.workers.amount >= 16 * 3 + gas_workers  # max 3 base saturation
+
+        upgrades = [
+            Step(UnitReady(UnitTypeId.EVOLUTIONCHAMBER, 1), Tech(UpgradeId.ZERGMELEEWEAPONSLEVEL1, UnitTypeId.EVOLUTIONCHAMBER)),
+            Tech(UpgradeId.ZERGGROUNDARMORSLEVEL1, UnitTypeId.EVOLUTIONCHAMBER),
+            Tech(UpgradeId.ZERGMELEEWEAPONSLEVEL2, UnitTypeId.EVOLUTIONCHAMBER),
+            Tech(UpgradeId.ZERGGROUNDARMORSLEVEL2, UnitTypeId.EVOLUTIONCHAMBER),
+            Tech(UpgradeId.ZERGMELEEWEAPONSLEVEL3, UnitTypeId.EVOLUTIONCHAMBER),
+            Tech(UpgradeId.ZERGGROUNDARMORSLEVEL3, UnitTypeId.EVOLUTIONCHAMBER),
+        ]
+
         return BuildOrder(
             SetQueensSc2Policy(early_game_queen_policy, policy_name="early_game_queen_policy"),
             ActUnit(UnitTypeId.DRONE, UnitTypeId.LARVA, 13),
@@ -137,15 +150,24 @@ class QueensSc2(Strat):
             SequentialList(
                 Step(None, SetQueensSc2Policy(mid_game_queen_policy, policy_name="mid_game_queen_policy"),
                      skip_until=lambda ai: ai.time > 480),
-                Step(None, DistributeWorkers(max_gas=0), skip=lambda ai: ai.time > 480),
-                Step(None, DistributeWorkers(max_gas=0), skip_until=lambda ai: ai.time > 480 and self._bot.knowledge.iteration % 4 == 0),
+                DistributeWorkers(max_gas=gas_workers),
                 Step(None, SpeedMining(), lambda ai: ai.client.game_step > 5),
                 AutoOverLord(),
                 BuildOrder(
                     Step(None, ActUnit(UnitTypeId.DRONE, UnitTypeId.LARVA), skip=build_drones),
+                    Step(None, MorphLair(), skip_until=TechReady(UpgradeId.ZERGGROUNDARMORSLEVEL1, 0.5)),
+                    Step(None, ActBuilding(UnitTypeId.INFESTATIONPIT),
+                         skip_until=TechReady(UpgradeId.ZERGGROUNDARMORSLEVEL2, 0.01)),
+                    Step(None, MorphHive(), skip_until=TechReady(UpgradeId.ZERGGROUNDARMORSLEVEL2, 0.5)),
                     Step(None, ActUnit(UnitTypeId.QUEEN, UnitTypeId.HATCHERY)),
                     Expand(4),  # 4 mining bases
-                    ActBuilding(UnitTypeId.HATCHERY, 40),  # Macro hatcheries - 20 includes mining bases
+                    BuildGas(2),
+                    ActBuilding(UnitTypeId.EVOLUTIONCHAMBER, 2),
+                    # Step(None, ActBuilding(UnitTypeId.HATCHERY, 8), skip_until=TechReady(UpgradeId.ZERGGROUNDARMORSLEVEL1, 0.01)),
+                    upgrades,
+                    # Step(None, ActBuilding(UnitTypeId.HATCHERY, 16), skip_until=TechReady(UpgradeId.ZERGGROUNDARMORSLEVEL2, 0.01)),
+                    # Step(None, ActBuilding(UnitTypeId.HATCHERY, 30), skip_until=TechReady(UpgradeId.ZERGGROUNDARMORSLEVEL3, 0.01)),
+                    ActBuilding(UnitTypeId.HATCHERY, 40),
                 )
             ),
         )
