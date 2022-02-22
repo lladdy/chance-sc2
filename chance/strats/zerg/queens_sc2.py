@@ -58,7 +58,17 @@ class QueensSc2(Strat):
                                                 ),
                     "rally_point": self._bot.zone_manager.own_natural.center_location,
                 },
-                "inject_queens": {"active": False},
+                "inject_queens": {
+                    "active": True,
+                    "priority": False,
+                    "max": 2,
+                    "priority_defence_list": {
+                        UnitTypeId.BATTLECRUISER,
+                        UnitTypeId.LIBERATOR,
+                        UnitTypeId.LIBERATORAG,
+                        UnitTypeId.VOIDRAY,
+                    },
+                },
                 "nydus_queens": {
                     "active": True,
                     "max": 12,
