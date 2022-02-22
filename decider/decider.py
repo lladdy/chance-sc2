@@ -17,11 +17,6 @@ def fix_p(p):
 
 
 class Decider:
-    # Store:
-    # Number of times decision_name was made
-    # Number of times option was chosen.
-    # Number of times option ended with win.
-
     def __init__(self, file='./data/decision_cache.json', create_file_on_missing=True, rounding_precision: int = 4):
         self.global_decision_history: dict = {}
         self.match_decision_history: dict = {}
@@ -34,7 +29,7 @@ class Decider:
 
         with open(file) as f:
             self.global_decision_history: dict = json.load(f)
-            # todo: sanity check wins aren't more than times chosen
+            # TODO: sanity check wins aren't more than times chosen
 
     def decide(self, decision_name, options) -> (str, float):
         """
@@ -117,7 +112,7 @@ class Decider:
                              where=won_count != 0)
 
         """
-        mod: The higher this value, quicker the weight fall off as chosen_count climbs
+        mod: The higher this value, the quicker the weight fall off as chosen_count climbs
         """
         mod = 1.0
         # calculate a weight that will make low sample size choices more likely
