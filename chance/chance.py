@@ -13,7 +13,7 @@ from chance.strats.protoss import *
 from chance.strats import Strat
 from chance.util import get_strats_from_module
 from config import get_version
-from decider import Decider
+from BossMan import BossMan
 from sc2.data import Race, Result
 from sharpy.knowledges import KnowledgeBot
 from sharpy.plans import BuildOrder
@@ -34,7 +34,7 @@ class Chance(KnowledgeBot):
             self._force_strat = None
 
         self.random_build_used = False
-        self.decider = Decider()
+        self.bossman = BossMan()
 
     async def on_start(self):
         # Useful for debugging specific strats.
@@ -43,7 +43,7 @@ class Chance(KnowledgeBot):
             self.probability = 1.0
         else:
             # do this here because we need to know the build in order to create required managers
-            self.build_name, self.probability = self.decider.decide(f'build_{self.opponent_id}_{self.race}', self.AVAILABLE_STRATS[self.race])
+            self.build_name, self.probability = self.bossman.decide(f'build_{self.opponent_id}_{self.race}', self.AVAILABLE_STRATS[self.race])
 
         self.strat = self._get_strat(self.build_name)
         await self.strat.on_start(self)
@@ -59,7 +59,7 @@ class Chance(KnowledgeBot):
         return self.strat.configure_managers()
 
     async def on_end(self, game_result: Result):
-        self.decider.register_result(game_result==Result.Victory)
+        self.bossman.register_result(game_result==Result.Victory)
         await super().on_end(game_result)
 
     def _get_strat(self, strat_class: str) -> Strat:
