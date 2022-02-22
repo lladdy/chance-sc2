@@ -151,7 +151,7 @@ class QueensSc2(Strat):
             SequentialList(
                 Step(None, SetQueensSc2Policy(mid_game_queen_policy, policy_name="mid_game_queen_policy"),
                      skip_until=lambda ai: ai.time > 480),
-                SequentialList(
+                BuildOrder(
                     Step(None, DistributeWorkers(max_gas=4), skip=TechReady(UpgradeId.ZERGGROUNDARMORSLEVEL3, 0.01)),
                     Step(None, DistributeWorkers(max_gas=0),
                          skip_until=TechReady(UpgradeId.ZERGGROUNDARMORSLEVEL3, 0.01)),
