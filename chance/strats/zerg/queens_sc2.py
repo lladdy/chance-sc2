@@ -21,116 +21,117 @@ class QueensSc2(Strat):
 
         # Policies originally from QueenBot: https://aiarena.net/bots/201/
         early_game_queen_policy = {
-                "creep_queens": {
-                    "active": True,
-                    "distance_between_queen_tumors": 3,
-                    "first_tumor_position": self._bot.zone_manager.own_natural.center_location.towards(
-                        self._bot.game_info.map_center, 9
-                    ),
-                    "priority": True,
-                    "prioritize_creep": lambda: True,
-                    "max": 2,
-                    "defend_against_ground": True,
-                    "rally_point": self._bot.zone_manager.own_natural.center_location,
-                    "priority_defence_list": {
-                        UnitTypeId.ZERGLING,
-                        UnitTypeId.MARINE,
-                        UnitTypeId.ZEALOT
-                    },
+            "creep_queens": {
+                "active": True,
+                "distance_between_queen_tumors": 3,
+                "first_tumor_position": self._bot.zone_manager.own_natural.center_location.towards(
+                    self._bot.game_info.map_center, 9
+                ),
+                "priority": True,
+                "prioritize_creep": lambda: True,
+                "max": 2,
+                "defend_against_ground": True,
+                "rally_point": self._bot.zone_manager.own_natural.center_location,
+                "priority_defence_list": {
+                    UnitTypeId.ZERGLING,
+                    UnitTypeId.MARINE,
+                    UnitTypeId.ZEALOT
                 },
-                "creep_dropperlord_queens": {
-                    "active": True,
-                    "priority": True,
-                    "max": 1,
-                    "pass_own_threats": True,
-                    "target_expansions": [
-                        el[0] for el in self._bot.expansion_locations_list[-6:-3]
-                    ],
+            },
+            "creep_dropperlord_queens": {
+                "active": True,
+                "priority": True,
+                "max": 1,
+                "pass_own_threats": True,
+                "target_expansions": [
+                    el[0] for el in self._bot.expansion_locations_list[-6:-3]
+                ],
+            },
+            "defence_queens": {
+                "attack_condition": lambda: self._bot.enemy_units.filter(
+                    lambda u: u.type_id == UnitTypeId.WIDOWMINEBURROWED
+                              and u.distance_to(self._bot.enemy_start_locations[0]) > 50
+                              and not queens_manager.queens.defence.enemy_air_threats
+                              and not queens_manager.queens.defence.enemy_ground_threats
+                )
+                                            or (
+                                                self._bot.structures(UnitTypeId.NYDUSCANAL)
+                                                and self._bot.units(UnitTypeId.QUEEN).amount > 25
+                                            ),
+                "rally_point": self._bot.zone_manager.own_natural.center_location,
+            },
+            "inject_queens": {
+                "active": True,
+                "priority": False,
+                "max": 2,
+                "priority_defence_list": {
+                    UnitTypeId.BATTLECRUISER,
+                    UnitTypeId.LIBERATOR,
+                    UnitTypeId.LIBERATORAG,
+                    UnitTypeId.VOIDRAY,
                 },
-                "defence_queens": {
-                    "attack_condition": lambda: self._bot.enemy_units.filter(
-                        lambda u: u.type_id == UnitTypeId.WIDOWMINEBURROWED
-                                  and u.distance_to(self._bot.enemy_start_locations[0]) > 50
-                                  and not queens_manager.queens.defence.enemy_air_threats
-                                  and not queens_manager.queens.defence.enemy_ground_threats
-                    )
-                                                or (
-                                                    self._bot.structures(UnitTypeId.NYDUSCANAL)
-                                                    and self._bot.units(UnitTypeId.QUEEN).amount > 25
-                                                ),
-                    "rally_point": self._bot.zone_manager.own_natural.center_location,
-                },
-                "inject_queens": {
-                    "active": True,
-                    "priority": False,
-                    "max": 2,
-                    "priority_defence_list": {
-                        UnitTypeId.BATTLECRUISER,
-                        UnitTypeId.LIBERATOR,
-                        UnitTypeId.LIBERATORAG,
-                        UnitTypeId.VOIDRAY,
-                    },
-                },
-                "nydus_queens": {
-                    "active": True,
-                    "max": 12,
-                    "steal_from": {QueenRoles.Defence},
-                },
-            }
+            },
+            "nydus_queens": {
+                "active": True,
+                "max": 12,
+                "steal_from": {QueenRoles.Defence},
+            },
+        }
 
         mid_game_queen_policy = {
-                "creep_queens": {
-                    "max": 2,
-                    "priority": True,
-                    "defend_against_ground": True,
-                    "distance_between_queen_tumors": 3,
-                    "priority_defence_list": {
-                        UnitTypeId.BATTLECRUISER,
-                        UnitTypeId.LIBERATOR,
-                        UnitTypeId.LIBERATORAG,
-                        UnitTypeId.VOIDRAY,
-                    },
+            "creep_queens": {
+                "max": 2,
+                "priority": True,
+                "defend_against_ground": True,
+                "distance_between_queen_tumors": 3,
+                "priority_defence_list": {
+                    UnitTypeId.BATTLECRUISER,
+                    UnitTypeId.LIBERATOR,
+                    UnitTypeId.LIBERATORAG,
+                    UnitTypeId.VOIDRAY,
                 },
-                "creep_dropperlord_queens": {
-                    "active": True,
-                    "priority": True,
-                    "max": 1,
-                    "pass_own_threats": True,
-                    "priority_defence_list": set(),
-                    "target_expansions": [
-                        el for el in self._bot.expansion_locations_list
-                    ],
-                },
-                "defence_queens": {
-                    "attack_condition": lambda: (
-                                                    sum([unit.energy for unit in self._bot.units(UnitTypeId.QUEEN)])
-                                                    / self._bot.units(UnitTypeId.QUEEN).amount
-                                                    >= 75
-                                                    and self._bot.units(UnitTypeId.QUEEN).amount > 40
-                                                )
-                                                or self._bot.enemy_units.filter(
-                        lambda u: u.type_id == UnitTypeId.WIDOWMINEBURROWED
-                                  and u.distance_to(self._bot.enemy_start_locations[0]) > 50
-                                  and not queens_manager.queens.defence.enemy_air_threats
-                                  and not queens_manager.queens.defence.enemy_ground_threats
-                    )
-                                                or self._bot.structures(UnitTypeId.NYDUSCANAL),
-                    "rally_point": self._bot.zone_manager.own_natural.center_location,
-                },
-                "inject_queens": {"active": False},
-                "nydus_queens": {
-                    "active": True,
-                    "max": 12,
-                    "steal_from": {QueenRoles.Defence},
-                },
-            }
+            },
+            "creep_dropperlord_queens": {
+                "active": True,
+                "priority": True,
+                "max": 1,
+                "pass_own_threats": True,
+                "priority_defence_list": set(),
+                "target_expansions": [
+                    el for el in self._bot.expansion_locations_list
+                ],
+            },
+            "defence_queens": {
+                "attack_condition": lambda: (
+                                                sum([unit.energy for unit in self._bot.units(UnitTypeId.QUEEN)])
+                                                / self._bot.units(UnitTypeId.QUEEN).amount
+                                                >= 75
+                                                and self._bot.units(UnitTypeId.QUEEN).amount > 40
+                                            )
+                                            or self._bot.enemy_units.filter(
+                    lambda u: u.type_id == UnitTypeId.WIDOWMINEBURROWED
+                              and u.distance_to(self._bot.enemy_start_locations[0]) > 50
+                              and not queens_manager.queens.defence.enemy_air_threats
+                              and not queens_manager.queens.defence.enemy_ground_threats
+                )
+                                            or self._bot.structures(UnitTypeId.NYDUSCANAL),
+                "rally_point": self._bot.zone_manager.own_natural.center_location,
+            },
+            "inject_queens": {"active": False},
+            "nydus_queens": {
+                "active": True,
+                "max": 12,
+                "steal_from": {QueenRoles.Defence},
+            },
+        }
 
         gas_workers = 4
         build_drones = lambda ai: self._bot.workers.amount >= self._bot.townhalls.amount * 16 + gas_workers \
                                   or self._bot.workers.amount >= 16 * 3 + gas_workers  # max 3 base saturation
 
         upgrades = [
-            Step(UnitReady(UnitTypeId.EVOLUTIONCHAMBER, 1), Tech(UpgradeId.ZERGMELEEWEAPONSLEVEL1, UnitTypeId.EVOLUTIONCHAMBER)),
+            Step(UnitReady(UnitTypeId.EVOLUTIONCHAMBER, 1),
+                 Tech(UpgradeId.ZERGMELEEWEAPONSLEVEL1, UnitTypeId.EVOLUTIONCHAMBER)),
             Tech(UpgradeId.ZERGGROUNDARMORSLEVEL1, UnitTypeId.EVOLUTIONCHAMBER),
             Tech(UpgradeId.ZERGMELEEWEAPONSLEVEL2, UnitTypeId.EVOLUTIONCHAMBER),
             Tech(UpgradeId.ZERGGROUNDARMORSLEVEL2, UnitTypeId.EVOLUTIONCHAMBER),
@@ -150,7 +151,11 @@ class QueensSc2(Strat):
             SequentialList(
                 Step(None, SetQueensSc2Policy(mid_game_queen_policy, policy_name="mid_game_queen_policy"),
                      skip_until=lambda ai: ai.time > 480),
-                DistributeWorkers(max_gas=gas_workers),
+                SequentialList(
+                    Step(None, DistributeWorkers(max_gas=4), skip=TechReady(UpgradeId.ZERGGROUNDARMORSLEVEL3, 0.01)),
+                    Step(None, DistributeWorkers(max_gas=0),
+                         skip_until=TechReady(UpgradeId.ZERGGROUNDARMORSLEVEL3, 0.01)),
+                ),
                 Step(None, SpeedMining(), lambda ai: ai.client.game_step > 5),
                 AutoOverLord(),
                 BuildOrder(
@@ -163,11 +168,8 @@ class QueensSc2(Strat):
                     Expand(4),  # 4 mining bases
                     BuildGas(2),
                     ActBuilding(UnitTypeId.EVOLUTIONCHAMBER, 2),
-                    # Step(None, ActBuilding(UnitTypeId.HATCHERY, 8), skip_until=TechReady(UpgradeId.ZERGGROUNDARMORSLEVEL1, 0.01)),
                     upgrades,
-                    # Step(None, ActBuilding(UnitTypeId.HATCHERY, 16), skip_until=TechReady(UpgradeId.ZERGGROUNDARMORSLEVEL2, 0.01)),
-                    # Step(None, ActBuilding(UnitTypeId.HATCHERY, 30), skip_until=TechReady(UpgradeId.ZERGGROUNDARMORSLEVEL3, 0.01)),
-                    ActBuilding(UnitTypeId.HATCHERY, 40),
+                    ActBuilding(UnitTypeId.HATCHERY, 20),
                 )
             ),
         )
