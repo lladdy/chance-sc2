@@ -60,7 +60,7 @@ class Chance(KnowledgeBot):
         return self.strat.configure_managers()
 
     async def on_end(self, game_result: Result):
-        self.bossman.register_result(game_result==Result.Victory)
+        self.bossman.report_result(game_result==Result.Victory)
         await super().on_end(game_result)
 
     def _get_strat(self, strat_class: str) -> Strat:
