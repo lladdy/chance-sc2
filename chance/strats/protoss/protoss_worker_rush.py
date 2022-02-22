@@ -83,12 +83,13 @@ class WorkerAttack(ActBase):
 
 
 class ProtossWorkerRush(Strat):
-    def __init__(self, bot: KnowledgeBot):
-        super().__init__(bot)
-        self.cleanup = MacroStalkers(bot)
+    async def on_start(self, bot: KnowledgeBot):
+        await super().on_start(bot)
+        self.cleanup = MacroStalkers()
+        await self.cleanup.on_start(bot)
 
     def configure_managers(self) -> Optional[List["ManagerBase"]]:
-        return MacroStalkers.configure_managers(self)
+        return self.cleanup.configure_managers()
 
     async def create_plan(self) -> BuildOrder:
         perform_cleanup = RequireCustom(lambda

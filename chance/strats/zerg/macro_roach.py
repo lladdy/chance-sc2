@@ -1,5 +1,4 @@
 from chance.strats import Strat
-from sc2.data import Race
 from sc2.ids.unit_typeid import UnitTypeId
 from sc2.ids.upgrade_id import UpgradeId
 from sharpy.plans import BuildOrder, Step, StepBuildGas
@@ -103,9 +102,3 @@ class MacroRoach(Strat):
         ]
 
         return BuildOrder(build, tactics)
-
-
-class LadderBot(MacroRoach):
-    @property
-    def my_race(self):
-        return Race.Zerg

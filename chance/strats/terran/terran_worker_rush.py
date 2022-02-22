@@ -2,7 +2,7 @@ from typing import Optional, List
 
 from chance.set_game_step_size_act import SetGameStepSize
 from chance.strats.strat import Strat
-from chance.strats.terran import BattleCruisers
+from chance.strats.terran import BattleCruisers, Bio
 from sharpy.interfaces import IZoneManager, ILostUnitsManager
 from sharpy.interfaces.combat_manager import MoveType, ICombatManager
 from sharpy.knowledges import KnowledgeBot, Knowledge
@@ -83,12 +83,13 @@ class WorkerAttack(ActBase):
 
 
 class TerranWorkerRush(Strat):
-    def __init__(self, bot: KnowledgeBot):
-        super().__init__(bot)
-        self.cleanup = BattleCruisers(bot)
+    async def on_start(self, bot: KnowledgeBot):
+        await super().on_start(bot)
+        self.cleanup = Bio()
+        await self.cleanup.on_start(bot)
 
     def configure_managers(self) -> Optional[List["ManagerBase"]]:
-        return self.cleanup.configure_managers(self)
+        return self.cleanup.configure_managers()
 
     async def create_plan(self) -> BuildOrder:
         perform_cleanup = RequireCustom(lambda
@@ -101,5 +102,5 @@ class TerranWorkerRush(Strat):
             Step(None, SequentialList(
                 SetGameStepSize(self._bot.client.game_step),  # back to the original step size
                 await self.cleanup.create_plan()
-            ), skip=perform_cleanup),
+            ), skip_until=perform_cleanup),
         ])
