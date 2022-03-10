@@ -13,7 +13,7 @@ from chance.strats.protoss import *
 from chance.strats import Strat
 from chance.util import get_strats_from_module
 from config import get_version
-from BossMan import BossMan
+from bossman import BossMan
 from sc2.data import Race, Result
 from sharpy.knowledges import KnowledgeBot
 from sharpy.plans import BuildOrder
