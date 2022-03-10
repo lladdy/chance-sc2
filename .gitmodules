@@ -7,6 +7,3 @@
 [submodule "SC2MapAnalysis"]
 	path = SC2MapAnalysis
 	url = https://github.com/lladdy/SC2MapAnalysis.git
-[submodule "BossMan"]
-	path = BossMan
-	url = https://github.com/lladdy/BossMan.git
