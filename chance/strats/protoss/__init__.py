@@ -7,6 +7,7 @@ from .macro_robo import MacroRobo
 from .macro_stalkers import MacroStalkers
 from .macro_voidray import MacroVoidray
 from .one_base_tempests import OneBaseTempests
+from .one_base_carriers import OneBaseCarriers
 from .protoss_worker_rush import ProtossWorkerRush
 from .proxy_zealot_rush import ProxyZealotRush
 from .stalkers_4_gate import Stalkers4Gate
