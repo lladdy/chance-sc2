@@ -44,7 +44,9 @@ class Chance(KnowledgeBot):
         else:
             # do this here because we need to know the build in order to create required managers
             self.build_name, self.probability = \
-                self.bossman.decide(self.AVAILABLE_STRATS[self.race], scope=f'build_{self.opponent_id}_{self.race}')
+                self.bossman.decide(self.AVAILABLE_STRATS[self.race], 'build',
+                                    opponent_id=self.opponent_id,
+                                    my_race=f"{self.race}")
 
         self.strat = self._get_strat(self.build_name)
         await self.strat.on_start(self)
