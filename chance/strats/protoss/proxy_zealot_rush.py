@@ -1,6 +1,6 @@
 from math import floor
 
-from chance.sharpy.Solvers import ProxySolver
+from chance.sharpy import ProxySolver
 
 from chance.strats import Strat
 from sc2.ids.unit_typeid import UnitTypeId
