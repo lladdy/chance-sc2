@@ -190,7 +190,7 @@ class ProxyCannoneer(ActBase):
         return worker
 
 
-class CannonRush(Strat):
+class CannonContain(Strat):
     async def create_plan(self) -> BuildOrder:
 
         self._bot.building_solver.wall_type = WallType.NoWall
@@ -198,19 +198,7 @@ class CannonRush(Strat):
             lambda k: self._bot.lost_units_manager.own_lost_type(UnitTypeId.PROBE) >= 3 or self._bot.time > 4 * 60
         )
 
-        cannon_rush = BuildOrder(
-            [
-                [GridBuilding(UnitTypeId.PYLON, 1), GridBuilding(UnitTypeId.FORGE, 1, priority=True)],
-                ProxyCannoneer(),
-                ProtossUnit(UnitTypeId.PROBE, 18),
-                ChronoUnit(UnitTypeId.PROBE, UnitTypeId.NEXUS),
-                [
-                    Step(Minerals(400), GridBuilding(UnitTypeId.GATEWAY, 1)),
-                    Step(Minerals(700), Expand(2), skip=UnitExists(UnitTypeId.NEXUS, 2)),
-                    GridBuilding(UnitTypeId.CYBERNETICSCORE, 1),
-                ],
-            ]
-        )
+        cannon_contain = self.cannon_contain()
 
         return BuildOrder(
             Step(
@@ -223,7 +211,7 @@ class CannonRush(Strat):
             SequentialList(
                 ActUnit(UnitTypeId.PROBE, UnitTypeId.NEXUS, 13),
                 GridBuilding(UnitTypeId.PYLON, 1),
-                Step(None, cannon_rush, skip=rush_killed),
+                Step(None, cannon_contain, skip=rush_killed),
                 BuildOrder(
                     [
                         Expand(2),
@@ -263,3 +251,91 @@ class CannonRush(Strat):
             ),
         )
 
+    def cannon_contain(self) -> ActBase:
+        enemy_main = self._bot.zone_manager.expansion_zones[-1]
+        natural = self._bot.zone_manager.expansion_zones[-2]
+        enemy_ramp = enemy_main.ramp
+
+        return Step(
+            None,
+            BuildOrder(
+                [
+                    [
+                        ActUnitOnce(UnitTypeId.PROBE, UnitTypeId.NEXUS, 14),
+                        GridBuilding(UnitTypeId.FORGE, 1),
+                        ActUnitOnce(UnitTypeId.PROBE, UnitTypeId.NEXUS, 18),
+                    ],
+                    [
+                        BuildPosition(UnitTypeId.PYLON, natural.center_location),
+                        BuildPosition(
+                            UnitTypeId.PHOTONCANNON,
+                            natural.center_location.towards(enemy_ramp.bottom_center, 5),
+                            exact=False,
+                            only_once=True,
+                        ),
+                        BuildPosition(
+                            UnitTypeId.PYLON,
+                            natural.center_location.towards(enemy_ramp.bottom_center, 8),
+                            exact=False,
+                            only_once=True,
+                        ),
+                        BuildPosition(
+                            UnitTypeId.PHOTONCANNON,
+                            natural.center_location.towards(enemy_ramp.top_center, 13),
+                            exact=False,
+                            only_once=True,
+                        ),
+                        BuildPosition(
+                            UnitTypeId.PYLON,
+                            natural.center_location.towards(enemy_ramp.bottom_center, 16),
+                            exact=False,
+                            only_once=True,
+                        ),
+                        BuildPosition(
+                            UnitTypeId.PHOTONCANNON,
+                            natural.center_location.towards(enemy_ramp.top_center, 20),
+                            exact=False,
+                            only_once=True,
+                        ),
+                    ],
+                    [
+                        BuildPosition(
+                            UnitTypeId.PYLON, natural.behind_mineral_position_center, exact=False, only_once=True
+                        ),
+                        BuildPosition(
+                            UnitTypeId.PHOTONCANNON,
+                            natural.center_location.towards(enemy_main.behind_mineral_position_center, 5),
+                            exact=False,
+                            only_once=True,
+                        ),
+                        BuildPosition(
+                            UnitTypeId.PYLON,
+                            natural.center_location.towards(enemy_main.behind_mineral_position_center, 8),
+                            exact=False,
+                            only_once=True,
+                        ),
+                        BuildPosition(
+                            UnitTypeId.PHOTONCANNON,
+                            natural.center_location.towards(enemy_main.behind_mineral_position_center, 12),
+                            exact=False,
+                            only_once=True,
+                        ),
+                        BuildPosition(
+                            UnitTypeId.PYLON,
+                            natural.center_location.towards(enemy_main.behind_mineral_position_center, 16),
+                            exact=False,
+                            only_once=True,
+                        ),
+                        BuildPosition(
+                            UnitTypeId.PHOTONCANNON,
+                            natural.center_location.towards(enemy_main.behind_mineral_position_center, 20),
+                            exact=False,
+                            only_once=True,
+                        ),
+                    ],
+                    ActUnit(UnitTypeId.PROBE, UnitTypeId.NEXUS, 16),
+                ]
+            ),
+            # Skip cannon rushing if we started nexus, or have over 750 minerals, the build is probably stuck
+            skip=Any([UnitExists(UnitTypeId.NEXUS, 2), Minerals(750)]),
+        )

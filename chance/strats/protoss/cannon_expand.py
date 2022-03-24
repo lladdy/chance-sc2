@@ -190,7 +190,7 @@ class ProxyCannoneer(ActBase):
         return worker
 
 
-class CannonRush(Strat):
+class CannonExpand(Strat):
     async def create_plan(self) -> BuildOrder:
 
         self._bot.building_solver.wall_type = WallType.NoWall
@@ -198,19 +198,7 @@ class CannonRush(Strat):
             lambda k: self._bot.lost_units_manager.own_lost_type(UnitTypeId.PROBE) >= 3 or self._bot.time > 4 * 60
         )
 
-        cannon_rush = BuildOrder(
-            [
-                [GridBuilding(UnitTypeId.PYLON, 1), GridBuilding(UnitTypeId.FORGE, 1, priority=True)],
-                ProxyCannoneer(),
-                ProtossUnit(UnitTypeId.PROBE, 18),
-                ChronoUnit(UnitTypeId.PROBE, UnitTypeId.NEXUS),
-                [
-                    Step(Minerals(400), GridBuilding(UnitTypeId.GATEWAY, 1)),
-                    Step(Minerals(700), Expand(2), skip=UnitExists(UnitTypeId.NEXUS, 2)),
-                    GridBuilding(UnitTypeId.CYBERNETICSCORE, 1),
-                ],
-            ]
-        )
+        cannon_expand = self.cannon_expand()
 
         return BuildOrder(
             Step(
@@ -223,7 +211,7 @@ class CannonRush(Strat):
             SequentialList(
                 ActUnit(UnitTypeId.PROBE, UnitTypeId.NEXUS, 13),
                 GridBuilding(UnitTypeId.PYLON, 1),
-                Step(None, cannon_rush, skip=rush_killed),
+                Step(None, cannon_expand, skip=rush_killed),
                 BuildOrder(
                     [
                         Expand(2),
@@ -262,4 +250,38 @@ class CannonRush(Strat):
                 PlanFinishEnemy(),
             ),
         )
+
+    def cannon_expand(self) -> ActBase:
+        natural = self._bot.zone_manager.expansion_zones[-2]
+        pylon_pos: Point2 = natural.behind_mineral_position_center
+
+        return BuildOrder(
+            [
+                [
+                    ActUnitOnce(UnitTypeId.PROBE, UnitTypeId.NEXUS, 14),
+                    GridBuilding(UnitTypeId.FORGE, 1),
+                    ActUnit(UnitTypeId.PROBE, UnitTypeId.NEXUS, 18),
+                ],
+                [
+                    BuildPosition(UnitTypeId.PYLON, pylon_pos, exact=False, only_once=True),
+                    Step(
+                        None,
+                        BuildPosition(
+                            UnitTypeId.PHOTONCANNON,
+                            pylon_pos.towards(natural.center_location, 4),
+                            exact=False,
+                            only_once=True,
+                        ),
+                        skip=RequireCustom(lambda k: k.lost_units_manager.own_lost_type(UnitTypeId.PYLON) > 0),
+                    ),
+                    Expand(2),
+                    GridBuilding(UnitTypeId.GATEWAY, 1),
+                    DefensiveCannons(2, 0, 1),
+                ],
+            ]
+        )
+
+
+
+
 
