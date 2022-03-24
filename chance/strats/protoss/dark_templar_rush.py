@@ -1,9 +1,8 @@
 from chance.strats import Strat
 from sc2.ids.unit_typeid import UnitTypeId
-from sharpy.knowledges import KnowledgeBot
+from sc2.ids.upgrade_id import UpgradeId
 from sharpy.plans.protoss import *
 from sharpy.plans.tactics.protoss import DarkTemplarAttack
-from sc2.ids.upgrade_id import UpgradeId
 
 
 class DarkTemplarRush(Strat):

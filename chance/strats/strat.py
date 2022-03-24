@@ -1,5 +1,4 @@
 from abc import abstractmethod
-from multiprocessing.managers import BaseManager
 from typing import List, Optional
 
 from sharpy.knowledges import KnowledgeBot

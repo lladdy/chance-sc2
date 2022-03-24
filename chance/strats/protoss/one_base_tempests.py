@@ -1,5 +1,4 @@
 from chance.strats import Strat
-from sc2.data import Race
 from sc2.ids.unit_typeid import UnitTypeId
 from sharpy.managers.core.building_solver import WallType
 from sharpy.plans import BuildOrder, Step, SequentialList

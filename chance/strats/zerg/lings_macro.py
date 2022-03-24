@@ -1,24 +1,18 @@
-import random
-
 from chance.strats import Strat
-from sc2.data import Race
 from sc2.ids.unit_typeid import UnitTypeId
+from sc2.ids.upgrade_id import UpgradeId
 from sharpy.combat import MoveType
+from sharpy.knowledges import Knowledge
+from sharpy.plans import BuildOrder, Step, SequentialList, StepBuildGas
 from sharpy.plans.acts import *
 from sharpy.plans.acts.zerg import *
 from sharpy.plans.require import *
 from sharpy.plans.tactics import *
 from sharpy.plans.tactics.zerg import *
-from sharpy.plans import BuildOrder, Step, SequentialList, StepBuildGas
-
-from sc2.ids.upgrade_id import UpgradeId
-
-from sharpy.knowledges import Knowledge, KnowledgeBot
 
 
 class LingSpeedBuild(BuildOrder):
     def __init__(self):
-
         gas_related = [
             StepBuildGas(1, UnitExists(UnitTypeId.HATCHERY, 2)),
             Step(None, Tech(UpgradeId.ZERGLINGMOVEMENTSPEED), skip_until=Gas(100)),
@@ -65,7 +59,6 @@ class LingSpeedBuild(BuildOrder):
 
 class LingFloodBuild(BuildOrder):
     def __init__(self):
-
         gas_related = [
             StepBuildGas(1, UnitExists(UnitTypeId.HATCHERY, 2)),
             Step(None, Tech(UpgradeId.ZERGLINGMOVEMENTSPEED), skip_until=Gas(100)),
@@ -114,7 +107,8 @@ class LingFloodBuild(BuildOrder):
                 UnitExists(UnitTypeId.QUEEN, 1),
             ),
             Step(UnitExists(UnitTypeId.SPAWNINGPOOL, 1), ActUnit(UnitTypeId.DRONE, UnitTypeId.LARVA, 20), None),
-            Step(UnitExists(UnitTypeId.SPAWNINGPOOL, 1), ActUnitOnce(UnitTypeId.ZERGLING, UnitTypeId.LARVA, 12), None,),
+            Step(UnitExists(UnitTypeId.SPAWNINGPOOL, 1), ActUnitOnce(UnitTypeId.ZERGLING, UnitTypeId.LARVA, 12),
+                 None, ),
             Step(UnitExists(UnitTypeId.SPAWNINGPOOL, 1), ActUnit(UnitTypeId.DRONE, UnitTypeId.LARVA, 30), None),
             # Endless zerglings
             Step(UnitExists(UnitTypeId.SPAWNINGPOOL, 1), ActUnit(UnitTypeId.ZERGLING, UnitTypeId.LARVA), None),

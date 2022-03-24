@@ -1,17 +1,15 @@
 from typing import Optional, List
 
 from chance.strats import Strat
-from sc2.data import Race
 from sc2.ids.unit_typeid import UnitTypeId
+from sc2.ids.upgrade_id import UpgradeId
 from sharpy.managers.core import ManagerBase
+from sharpy.plans import BuildOrder, Step, StepBuildGas
 from sharpy.plans.acts import *
 from sharpy.plans.acts.zerg import *
 from sharpy.plans.require import *
 from sharpy.plans.tactics import *
 from sharpy.plans.tactics.zerg import *
-from sharpy.plans import BuildOrder, Step, SequentialList, StepBuildGas
-from sharpy.knowledges import Knowledge, KnowledgeBot
-from sc2.ids.upgrade_id import UpgradeId
 
 
 class MacroBuild(BuildOrder):

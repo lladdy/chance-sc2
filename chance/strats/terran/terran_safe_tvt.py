@@ -1,8 +1,6 @@
 from chance.strats import Strat
 from sc2.ids.unit_typeid import UnitTypeId
 from sc2.ids.upgrade_id import UpgradeId
-from sharpy.plans.tactics.terran import CallMule, LowerDepots
-from sharpy.plans.tactics.terran.addon_swap import PlanAddonSwap, ExecuteAddonSwap
 from sharpy.plans.terran import *
 
 

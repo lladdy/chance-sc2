@@ -1,15 +1,12 @@
 from chance.strats import Strat
-from sc2.data import Race
 from sc2.ids.unit_typeid import UnitTypeId
+from sc2.ids.upgrade_id import UpgradeId
+from sharpy.plans import BuildOrder, Step, StepBuildGas
 from sharpy.plans.acts import *
 from sharpy.plans.acts.terran import *
 from sharpy.plans.require import *
 from sharpy.plans.tactics import *
 from sharpy.plans.tactics.terran import *
-from sharpy.plans import BuildOrder, Step, StepBuildGas
-from sc2.ids.upgrade_id import UpgradeId
-
-from sharpy.knowledges import KnowledgeBot
 
 
 class TwoBaseTanks(Strat):

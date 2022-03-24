@@ -1,6 +1,6 @@
 from typing import Optional, List
 
-from chance.set_game_step_size_act import SetGameStepSize
+from chance.sharpy.set_game_step_size_act import SetGameStepSize
 from chance.strats.protoss import MacroStalkers
 from chance.strats.strat import Strat
 from sharpy.interfaces import ICombatManager, IZoneManager, ILostUnitsManager

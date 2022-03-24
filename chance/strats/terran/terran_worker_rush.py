@@ -1,8 +1,8 @@
 from typing import Optional, List
 
-from chance.set_game_step_size_act import SetGameStepSize
+from chance.sharpy.set_game_step_size_act import SetGameStepSize
 from chance.strats.strat import Strat
-from chance.strats.terran import BattleCruisers, Bio
+from chance.strats.terran import Bio
 from sharpy.interfaces import IZoneManager, ILostUnitsManager
 from sharpy.interfaces.combat_manager import MoveType, ICombatManager
 from sharpy.knowledges import KnowledgeBot, Knowledge

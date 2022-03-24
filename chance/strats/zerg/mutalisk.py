@@ -1,21 +1,17 @@
 from chance.strats import Strat
-from sc2.data import Race
 from sc2.ids.unit_typeid import UnitTypeId
+from sc2.ids.upgrade_id import UpgradeId
+from sharpy.plans import BuildOrder, Step, SequentialList, StepBuildGas
 from sharpy.plans.acts import *
 from sharpy.plans.acts.zerg import *
 from sharpy.plans.require import *
 from sharpy.plans.require.supply import SupplyType
 from sharpy.plans.tactics import *
 from sharpy.plans.tactics.zerg import *
-from sharpy.plans import BuildOrder, Step, SequentialList, StepBuildGas
-from sc2.ids.upgrade_id import UpgradeId
-
-from sharpy.knowledges import KnowledgeBot
 
 
 class MutaliskBuild(BuildOrder):
     def __init__(self):
-
         gas_related = [
             StepBuildGas(1, UnitExists(UnitTypeId.HATCHERY, 2)),
             Step(None, Tech(UpgradeId.ZERGLINGMOVEMENTSPEED), skip_until=Gas(100)),
@@ -78,7 +74,7 @@ class MutaliskBuild(BuildOrder):
             Step(None, ZergUnit(UnitTypeId.MUTALISK, 4), skip_until=UnitReady(UnitTypeId.SPIRE, 1)),
             Step(None, ZergUnit(UnitTypeId.DRONE, 45), None),
             Step(None, ActUnitOnce(UnitTypeId.ZERGLING, UnitTypeId.LARVA, 16), None),
-            Step(None, ZergUnit(UnitTypeId.ROACH, 10), skip=UnitReady(UnitTypeId.SPIRE, 1), skip_until=Gas(25),),
+            Step(None, ZergUnit(UnitTypeId.ROACH, 10), skip=UnitReady(UnitTypeId.SPIRE, 1), skip_until=Gas(25), ),
             Step(None, ZergUnit(UnitTypeId.DRONE, 65), None),
             Step(
                 None,

@@ -1,20 +1,16 @@
 import random
 
 from chance.strats.strat import Strat
-from sc2.data import Race
 from sc2.ids.unit_typeid import UnitTypeId
+from sc2.ids.upgrade_id import UpgradeId
+from sharpy.general.extended_power import ExtendedPower
+from sharpy.knowledges import Knowledge
+from sharpy.plans import BuildOrder, Step, SequentialList
 from sharpy.plans.acts import *
 from sharpy.plans.acts.protoss import *
 from sharpy.plans.require import *
-from sharpy.plans.tactics.protoss import *
 from sharpy.plans.tactics import *
-from sharpy.plans import BuildOrder, Step, SequentialList, StepBuildGas
-from sharpy.knowledges import KnowledgeBot
-
-from sharpy.knowledges import Knowledge
-
-from sharpy.general.extended_power import ExtendedPower
-from sc2.ids.upgrade_id import UpgradeId
+from sharpy.plans.tactics.protoss import *
 
 
 class TheAttack(PlanZoneAttack):
@@ -67,7 +63,7 @@ class AdeptAllIn(Strat):
                         GridBuilding(UnitTypeId.GATEWAY, 4),
                         skip_until=Minerals(200),
                     ),
-                    Step(None, ProtossUnit(UnitTypeId.ZEALOT, 100), skip=Gas(25), skip_until=Minerals(200),),
+                    Step(None, ProtossUnit(UnitTypeId.ZEALOT, 100), skip=Gas(25), skip_until=Minerals(200), ),
                 ),
             ),
             SequentialList(

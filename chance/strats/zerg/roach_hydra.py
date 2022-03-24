@@ -1,5 +1,4 @@
 from chance.strats import Strat
-from sc2.data import Race
 from sc2.ids.unit_typeid import UnitTypeId
 from sc2.ids.upgrade_id import UpgradeId
 from sharpy.plans import BuildOrder, Step, SequentialList, StepBuildGas
@@ -74,6 +73,7 @@ class RoachHydraBuild(BuildOrder):
 
 class RoachHydra(Strat):
     """Zerg macro opener into longer game roach hydra """
+
     async def pre_step_execute(self):
         if self._bot.minerals < 600 and self._bot.vespene > 200:
             self.distribute.max_gas = 7

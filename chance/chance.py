@@ -1,19 +1,16 @@
-import random
-
 # STRAT IMPORTS
-from typing import Optional, List, Callable
+from typing import Optional, List
 
+from bossman import BossMan
+from chance.strats import Strat
+# noinspection PyUnresolvedReferences
+from chance.strats.protoss import *
 # noinspection PyUnresolvedReferences
 from chance.strats.terran import *
 # noinspection PyUnresolvedReferences
 from chance.strats.zerg import *
-# noinspection PyUnresolvedReferences
-from chance.strats.protoss import *
-
-from chance.strats import Strat
 from chance.util import get_strats_from_module
 from config import get_version
-from bossman import BossMan
 from sc2.data import Race, Result
 from sharpy.knowledges import KnowledgeBot
 from sharpy.plans import BuildOrder
@@ -62,7 +59,7 @@ class Chance(KnowledgeBot):
         return self.strat.configure_managers()
 
     async def on_end(self, game_result: Result):
-        self.bossman.report_result(game_result==Result.Victory)
+        self.bossman.report_result(game_result == Result.Victory)
         await super().on_end(game_result)
 
     def _get_strat(self, strat_class: str) -> Strat:

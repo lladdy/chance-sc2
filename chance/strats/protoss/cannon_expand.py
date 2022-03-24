@@ -7,9 +7,7 @@ from sc2.ids.unit_typeid import UnitTypeId
 from sc2.ids.upgrade_id import UpgradeId
 from sc2.position import Point2
 from sc2.unit import Unit
-
-from sharpy.knowledges import KnowledgeBot, Knowledge
-from sharpy.managers.core import ManagerBase
+from sharpy.knowledges import Knowledge
 from sharpy.managers.core.building_solver import WallType
 from sharpy.managers.core.roles import UnitTask
 from sharpy.plans import BuildOrder, Step, SequentialList, StepBuildGas
@@ -17,7 +15,6 @@ from sharpy.plans.acts import *
 from sharpy.plans.acts.protoss import *
 from sharpy.plans.require import *
 from sharpy.plans.tactics import *
-from sharpy.utils import select_build_index
 
 
 class ProxyCannoneer(ActBase):
@@ -83,7 +80,6 @@ class ProxyCannoneer(ActBase):
         elif self.knowledge.can_afford(UnitTypeId.PHOTONCANNON):
             if distance < 5:
                 if not self.has_build_order(worker):
-
                     await self.build(UnitTypeId.PHOTONCANNON, target, max_distance=5, build_worker=worker)
             else:
                 position = self.pather.find_weak_influence_ground(target, 4)
@@ -192,7 +188,6 @@ class ProxyCannoneer(ActBase):
 
 class CannonExpand(Strat):
     async def create_plan(self) -> BuildOrder:
-
         self._bot.building_solver.wall_type = WallType.NoWall
         rush_killed = RequireCustom(
             lambda k: self._bot.lost_units_manager.own_lost_type(UnitTypeId.PROBE) >= 3 or self._bot.time > 4 * 60
@@ -234,7 +229,7 @@ class CannonExpand(Strat):
                     ],
                     [ProtossUnit(UnitTypeId.STALKER, 100)],
                     [
-                        Step(UnitReady(UnitTypeId.CYBERNETICSCORE, 1), GridBuilding(UnitTypeId.TWILIGHTCOUNCIL, 1),),
+                        Step(UnitReady(UnitTypeId.CYBERNETICSCORE, 1), GridBuilding(UnitTypeId.TWILIGHTCOUNCIL, 1), ),
                         Step(UnitReady(UnitTypeId.CYBERNETICSCORE, 1), GridBuilding(UnitTypeId.GATEWAY, 7)),
                         StepBuildGas(4, skip=Gas(200)),
                     ],
@@ -280,8 +275,3 @@ class CannonExpand(Strat):
                 ],
             ]
         )
-
-
-
-
-
