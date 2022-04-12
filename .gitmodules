@@ -1,6 +1,6 @@
 [submodule "sharpy-sc2"]
 	path = sharpy-sc2
-	url = git@github.com:lladdy/sharpy-sc2.git
+	url = https://github.com/lladdy/sharpy-sc2.git
 [submodule "queens-sc2"]
 	path = queens-sc2
 	url = https://github.com/lladdy/queens-sc2.git
