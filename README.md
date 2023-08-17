@@ -1,6 +1,6 @@
 # Chance
 
-A Starcraft 2 bot that plays Random and selects its strategy by random.
+A Starcraft 2 AI that plays Random and selects its strategy by random.
 
 [View on AI Arena](https://aiarena.net/bots/117/)
 
