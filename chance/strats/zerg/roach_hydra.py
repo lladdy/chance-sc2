@@ -93,6 +93,7 @@ class RoachHydra(Strat):
         return BuildOrder(
             RoachHydraBuild(),
             SequentialList(
+                MineOpenBlockedBase(),
                 PlanCancelBuilding(),
                 PlanZoneGather(),
                 PlanZoneDefense(),

@@ -55,6 +55,7 @@ class BattleCruisers(Strat):
         worker_scout = Step(None, WorkerScout(), skip_until=UnitExists(UnitTypeId.SUPPLYDEPOT, 1))
         self.distribute_workers = DistributeWorkers(4)
         tactics = [
+            MineOpenBlockedBase(),
             PlanCancelBuilding(),
             LowerDepots(),
             PlanZoneDefense(),

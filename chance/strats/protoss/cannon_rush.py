@@ -248,6 +248,7 @@ class CannonRush(Strat):
                 ),
             ),
             SequentialList(
+                MineOpenBlockedBase(),
                 PlanCancelBuilding(),
                 PlanZoneDefense(),
                 DistributeWorkers(),

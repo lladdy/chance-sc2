@@ -38,6 +38,7 @@ class RoachRush(Strat):
             in_case_of_air,
             SequentialList(
                 [
+                    MineOpenBlockedBase(),
                     DistributeWorkers(),
                     Step(None, SpeedMining(), lambda ai: ai.client.game_step > 5),
                     PlanZoneDefense(),

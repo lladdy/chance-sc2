@@ -78,6 +78,7 @@ class PlanetaryFortressRush(Strat):
             ]),
             SequentialList(
                 [
+                    MineOpenBlockedBase(),
                     Step(None, SpeedMining(), lambda ai: ai.client.game_step > 5),
                     PlanCancelBuilding(),
                     LowerDepots(),

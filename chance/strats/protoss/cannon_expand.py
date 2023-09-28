@@ -236,6 +236,7 @@ class CannonExpand(Strat):
                 ),
             ),
             SequentialList(
+                MineOpenBlockedBase(),
                 PlanCancelBuilding(),
                 PlanZoneDefense(),
                 DistributeWorkers(),

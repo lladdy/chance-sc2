@@ -103,6 +103,7 @@ class RoachBurrow(Strat):
         return BuildOrder(
             CounterTerranTie([RoachBurrowBuild()]),
             SequentialList(
+                MineOpenBlockedBase(),
                 OverlordScout(),
                 DistributeWorkers(),
                 Step(None, SpeedMining(), lambda ai: ai.client.game_step > 5),

@@ -41,6 +41,7 @@ class FiveRax(Strat):
             ]),
             SequentialList(
                 [
+                    MineOpenBlockedBase(),
                     PlanCancelBuilding(),
                     LowerDepots(),
                     PlanZoneDefense(),

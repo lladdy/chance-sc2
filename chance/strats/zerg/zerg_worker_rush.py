@@ -231,6 +231,7 @@ class ZergWorkerRush(Strat):
             ActUnitOnce(UnitTypeId.DRONE, UnitTypeId.LARVA, 24),
             LingFloodBuild(),
             SequentialList(
+                MineOpenBlockedBase(),
                 Step(None, SpeedMining(), lambda ai: ai.client.game_step > 5),
                 InjectLarva(),
                 Step(None, DistributeWorkers(3, 3), skip=Any([stop_gas, end_game])),

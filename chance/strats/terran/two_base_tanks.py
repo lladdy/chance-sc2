@@ -84,6 +84,7 @@ class TwoBaseTanks(Strat):
 
         self.attack = PlanZoneAttack(60)
         tactics = [
+            MineOpenBlockedBase(),
             PlanCancelBuilding(),
             LowerDepots(),
             PlanZoneDefense(),

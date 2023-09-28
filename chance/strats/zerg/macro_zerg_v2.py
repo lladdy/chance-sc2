@@ -71,6 +71,7 @@ class MacroZergV2(Strat):
         attack = PlanZoneAttack(120)
         attack.retreat_multiplier = 0.3
         tactics = [
+            MineOpenBlockedBase(),
             PlanCancelBuilding(),
             InjectLarva(),
             DistributeWorkers(),

@@ -67,6 +67,7 @@ class AdeptAllIn(Strat):
                 ),
             ),
             SequentialList(
+                MineOpenBlockedBase(),
                 ChronoAnyTech(0),
                 PlanZoneDefense(),
                 RestorePower(),

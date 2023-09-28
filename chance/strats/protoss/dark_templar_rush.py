@@ -90,6 +90,7 @@ class DarkTemplarRush(Strat):
         attack.retreat_multiplier = 0.5  # All in
 
         tactics = [
+            MineOpenBlockedBase(),
             PlanCancelBuilding(),
             PlanZoneDefense(),
             RestorePower(),

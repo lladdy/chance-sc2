@@ -118,6 +118,7 @@ class MarineRush(Strat):
         self.distribute_workers = DistributeWorkers()
 
         tactics = [
+            MineOpenBlockedBase(),
             PlanCancelBuilding(),
             LowerDepots(),
             PlanZoneDefense(),

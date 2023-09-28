@@ -206,6 +206,7 @@ class LingsMacro(Strat):
                 LingSpeedBuild(),
                 SequentialList(
                     [
+                        MineOpenBlockedBase(),
                         worker_scout,
                         SpreadCreep(),
                         InjectLarva(),

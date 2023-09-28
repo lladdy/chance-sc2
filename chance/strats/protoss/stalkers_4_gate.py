@@ -80,6 +80,7 @@ class Stalkers4Gate(Strat):
                 ),
             ),
             SequentialList(
+                MineOpenBlockedBase(),
                 PlanZoneDefense(),
                 RestorePower(),
                 DistributeWorkers(),

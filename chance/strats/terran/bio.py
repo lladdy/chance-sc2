@@ -208,6 +208,7 @@ class Bio(Strat):
     async def create_plan(self) -> BuildOrder:
         worker_scout = Step(None, WorkerScout(), skip_until=UnitExists(UnitTypeId.SUPPLYDEPOT, 1))
         tactics = [
+            MineOpenBlockedBase(),
             PlanCancelBuilding(),
             LowerDepots(),
             PlanZoneDefense(),

@@ -77,6 +77,7 @@ class MacroRobo(Strat):
                 ),
             ),
             SequentialList(
+                MineOpenBlockedBase(),
                 PlanCancelBuilding(),
                 PlanHeatObserver(),
                 PlanZoneDefense(),

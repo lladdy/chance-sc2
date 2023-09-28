@@ -209,6 +209,7 @@ class LingsAgressive(Strat):
                 LingFloodBuild(),
                 SequentialList(
                     [
+                        MineOpenBlockedBase(),
                         Step(None, SpeedMining(), lambda ai: ai.client.game_step > 5),
                         worker_scout,
                         SpreadCreep(),

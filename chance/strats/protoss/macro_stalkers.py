@@ -45,6 +45,7 @@ class MacroStalkers(Strat):
                 ),
             ),
             SequentialList(
+                MineOpenBlockedBase(),
                 PlanZoneDefense(),
                 RestorePower(),
                 DistributeWorkers(),

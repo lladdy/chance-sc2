@@ -50,6 +50,7 @@ class OneBaseTurtle(Strat):
 
         attack = PlanZoneAttack(4)
         tactics = [
+            MineOpenBlockedBase(),
             PlanCancelBuilding(),
             ManTheBunkers(),
             LowerDepots(),

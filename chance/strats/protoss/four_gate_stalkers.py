@@ -2,7 +2,7 @@ from chance.strats.strat import Strat
 from sc2.constants import *
 from sharpy.knowledges import Knowledge
 from sharpy.plans import BuildOrder, Step, SequentialList, StepBuildGas
-from sharpy.plans.acts import ActUnit, GridBuilding, Tech
+from sharpy.plans.acts import ActUnit, GridBuilding, Tech, MineOpenBlockedBase
 from sharpy.plans.acts.protoss import AutoPylon, RestorePower, ChronoUnit, ProtossUnit
 from sharpy.plans.require import UnitReady
 from sharpy.plans.tactics import PlanZoneAttack, PlanZoneDefense, PlanZoneGather, PlanFinishEnemy, DistributeWorkers, \
@@ -49,6 +49,7 @@ class FourGateStalkers(Strat):
             ]),
             SequentialList(
                 [
+                    MineOpenBlockedBase(),
                     PlanZoneDefense(),
                     RestorePower(),
                     DistributeWorkers(),

@@ -67,6 +67,7 @@ class TwelvePool(Strat):
             Step(SupplyLeft(0), AutoOverLord()),
             finish,
             build_step_units,
+            MineOpenBlockedBase(),
             AutoOverLord(),
             DistributeWorkers(),
             Step(None, SpeedMining(), lambda ai: ai.client.game_step > 5),

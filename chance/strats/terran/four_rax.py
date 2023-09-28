@@ -40,6 +40,7 @@ class FourRax(Strat):
             ]),
             SequentialList(
                 [
+                    MineOpenBlockedBase(),
                     PlanCancelBuilding(),
                     LowerDepots(),
                     PlanZoneDefense(),

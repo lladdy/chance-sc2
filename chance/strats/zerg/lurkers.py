@@ -170,6 +170,7 @@ class Lurkers(Strat):
         return BuildOrder(
             CounterTerranTie([LurkerBuild()]),
             SequentialList(
+                MineOpenBlockedBase(),
                 PlanZoneDefense(),
                 OverlordScout(),
                 Step(None, LingScout(), skip_until=Time(4 * 60)),

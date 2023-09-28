@@ -184,6 +184,7 @@ class ProxyZealotRush(Strat):
                 ProxyZealots(),
                 ChronoUnit(UnitTypeId.ZEALOT, UnitTypeId.GATEWAY),
                 [
+                    MineOpenBlockedBase(),
                     DistributeWorkers(),
                     Step(None, SpeedMining(), lambda ai: ai.client.game_step > 5),
                     PlanZoneDefense(),

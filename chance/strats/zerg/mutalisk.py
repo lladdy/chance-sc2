@@ -108,6 +108,7 @@ class Mutalisk(Strat):
         return BuildOrder(
             MutaliskBuild(),
             SequentialList(
+                MineOpenBlockedBase(),
                 PlanCancelBuilding(),
                 PlanZoneGather(),
                 PlanZoneDefense(),

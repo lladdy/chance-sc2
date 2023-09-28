@@ -149,6 +149,7 @@ class QueensSc2(Strat):
             ActBuilding(UnitTypeId.SPAWNINGPOOL, 1),
             ActUnit(UnitTypeId.OVERLORD, UnitTypeId.LARVA, 2),
             SequentialList(
+                MineOpenBlockedBase(),
                 Step(None, SetQueensSc2Policy(mid_game_queen_policy, policy_name="mid_game_queen_policy"),
                      skip_until=lambda ai: ai.time > 480),
                 BuildOrder(

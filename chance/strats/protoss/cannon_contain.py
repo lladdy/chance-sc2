@@ -236,6 +236,7 @@ class CannonContain(Strat):
                 ),
             ),
             SequentialList(
+                MineOpenBlockedBase(),
                 PlanCancelBuilding(),
                 PlanZoneDefense(),
                 DistributeWorkers(),

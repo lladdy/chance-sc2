@@ -71,6 +71,7 @@ class MacroVoidray(Strat):
                 ),
             ),
             SequentialList(
+                MineOpenBlockedBase(),
                 PlanZoneDefense(),
                 RestorePower(),
                 DistributeWorkers(),

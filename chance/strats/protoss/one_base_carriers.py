@@ -38,6 +38,7 @@ class OneBaseCarriers(Strat):
                 ),
                 DefensiveCannons(4, 2, 0),
                 SequentialList(
+                    MineOpenBlockedBase(),
                     PlanZoneDefense(),
                     RestorePower(),
                     DistributeWorkers(),

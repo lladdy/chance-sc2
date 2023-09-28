@@ -90,6 +90,7 @@ class MacroRoach(Strat):
         attack = PlanZoneAttack(120)
 
         tactics = [
+            MineOpenBlockedBase(),
             PlanCancelBuilding(),
             SpreadCreep(),
             InjectLarva(),
