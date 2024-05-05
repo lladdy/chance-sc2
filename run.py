@@ -9,7 +9,7 @@ from sc2.main import run_game
 sys.path.insert(1, "sharpy-sc2")
 sys.path.insert(1, os.path.join("sharpy-sc2", "python-sc2"))
 sys.path.insert(1, "SC2MapAnalysis")
-sys.path.insert(1, "bossman")
+sys.path.insert(1, "bossman-sc2")
 
 from chance import run_ladder_game
 from chance.chance import Chance

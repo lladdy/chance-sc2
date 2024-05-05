@@ -31,7 +31,7 @@ class Chance(KnowledgeBot):
             self._force_strat = None
 
         self.random_build_used = False
-        self.bossman = BossMan()
+        self.bossman = BossMan() # legacy=True
 
     async def on_start(self):
         # Useful for debugging specific strats.
