@@ -2,7 +2,6 @@ from .banshees import Banshees
 from .battle_cruisers import BattleCruisers
 from .bio import Bio
 from .bunker_contain import BunkerContain
-from .cannon_far_contain import CannonFarContain
 from .five_rax import FiveRax
 from .four_rax import FourRax
 from .marine_rush import MarineRush

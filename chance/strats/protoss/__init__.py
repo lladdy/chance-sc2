@@ -1,6 +1,7 @@
 from .adept_allin import AdeptAllIn
 from .cannon_contain import CannonContain
 from .cannon_expand import CannonExpand
+from .cannon_far_contain import CannonFarContain
 from .cannon_rush import CannonRush
 from .dark_templar_rush import DarkTemplarRush
 from .disruptors import Distruptors
