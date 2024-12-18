@@ -7,16 +7,16 @@ readme = "README.md"
 #packages = [{include = "chance_sc2"}]
 
 [tool.poetry.dependencies]
-python = "3.10.*"
-loguru = "^0.6.0"
-s2clientprotocol = "^5.0.9"
-protobuf = "^3.20.1"
-portpicker = "^1.5.0"
-aiohttp = "^3.7.4"
-mpyq = "0.2.5"
-numpy = "<2.0.0"
-scipy = "1.10.0"
-scikit-learn = "^1.1.1"
+python = "3.12.*"
+loguru = "*"
+s2clientprotocol = "*"
+protobuf = "*"
+portpicker = "*"
+aiohttp = "*"
+mpyq = "*"
+numpy = "*"
+scipy = "*"
+scikit-learn = "*"
 
 [build-system]
 requires = ["poetry-core"]
