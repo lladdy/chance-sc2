@@ -2,6 +2,10 @@
 
 import argparse
 import os
+import sys
+
+sys.path.insert(1, "sharpy-sc2")
+sys.path.insert(1, os.path.join("sharpy-sc2", "python-sc2"))
 
 from bot_loader import LadderZip
 # import sub_module  # Important, do not remove!
